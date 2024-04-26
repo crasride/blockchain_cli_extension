@@ -39,21 +39,22 @@ int handle_info_block(state_t *state)
 		return (-1);
 	}
 
-
 	num_blocks = llist_size(chain);
+	fprintf(file, "[\n");
+	fprintf(file, "  {\n");
 	for (i = 0; i < num_blocks; i++)
 	{
 		block = (block_t *)llist_get_node_at(chain, i);
 		if (block != NULL)
 		{
 			arg_tx[0] = (void *)block;
-			fprintf(file, "{\n");
-			fprintf(file, "  \"Block %u\": [\n", block->info.index);
-			fprintf(file, "    {\n");
-			fprintf(file, "      \"index\": %u,\n", block->info.index);
-			fprintf(file, "      \"timestamp\": %lu,\n", block->info.timestamp);
-			fprintf(file, "      \"previous_block_hash\": \"%s\",\n", bytes_to_hex(block->info.prev_hash, SHA256_DIGEST_LENGTH));
-			fprintf(file, "      \"block_hash\": \"%s\",\n", bytes_to_hex(block->hash, SHA256_DIGEST_LENGTH));
+
+			fprintf(file, "    \"Block %u\": [\n", block->info.index);
+			fprintf(file, "      {\n");
+			fprintf(file, "        \"index\": %u,\n", block->info.index);
+			fprintf(file, "        \"timestamp\": %lu,\n", block->info.timestamp);
+			fprintf(file, "        \"previous_block_hash\": \"%s\",\n", bytes_to_hex(block->info.prev_hash, SHA256_DIGEST_LENGTH));
+			fprintf(file, "        \"block_hash\": \"%s\",\n", bytes_to_hex(block->hash, SHA256_DIGEST_LENGTH));
 
 			printf("\n");
 			printf(C_GREEN"\n======================================================\n");
@@ -69,33 +70,31 @@ int handle_info_block(state_t *state)
 			block_size = sizeof(block_t);
 			transactions_size = num_transactions * sizeof(transaction_t);
 			total_size = block_size + transactions_size;
+			fprintf(file, "        \"block_size\": %lu,\n", total_size);
+			fprintf(file, "        \"num_transactions\": %u,\n", num_transactions);
+			fprintf(file, "        \"transactions\": [\n");
+
 			printf("Block Size: " C_GREEN "%lu" C_RESET " bytes\n", total_size);
-
-			fprintf(file, "      \"block_size\": %lu,\n", total_size);
-
 			printf("Number of Transactions: " C_GREEN "%u" C_RESET "\n", num_transactions);
 
-			fprintf(file, "      \"num_transactions\": %u,\n", num_transactions);
 
-			fprintf(file, "      \"transactions\": [\n");
 			arg_tx[2] = (void *)file;
-			fprintf(file, "      ]\n");
 			llist_for_each(block->transactions, print_transaction_info, arg_tx);
+			fprintf(file, "      ]\n");
 
-			if (i < num_blocks - 1)
-			fprintf(file, "    },\n");
-			else
 			fprintf(file, "    }\n");
-
+			if (i < num_blocks - 1)
+				fprintf(file, "    ],\n");
+			else
+				fprintf(file, "  ]\n");
 		}
 	}
+	fprintf(file, "  }\n");
+	fprintf(file, "]\n");
+	fclose(file);
+	return 0;
+	}
 
-
-fprintf(file, "  ]\n");
-fprintf(file, "}\n");
-fclose(file);
-return 0;
-}
 
 
 /**
@@ -112,14 +111,14 @@ int print_transaction_info(llist_node_t node, unsigned int idx, void *args)
 	blockchain_t *blockchain = (blockchain_t *)ptr[1];
 	FILE *file = (FILE *)ptr[2];
 	transaction_t *transaction = (transaction_t *)node;
-	void *arg_out[4];
+	void *arg_in_out[4];
+	unsigned int num_transactions = llist_size(block->transactions);
 
+	arg_in_out[0] = (void *)block;
+	arg_in_out[1] = (void *)transaction;
+	arg_in_out[2] = (void *)blockchain->unspent;
+	arg_in_out[3] = (void *)file;
 
-
-	arg_out[0] = (void *)block;
-	arg_out[1] = (void *)transaction;
-	arg_out[2] = (void *)blockchain->unspent;
-	arg_out[3] = (void *)file;
 
 	fprintf(file, "        {\n");
 	fprintf(file, "          \"transaction_id\": \"%s\",\n", bytes_to_hex(transaction->id, SHA256_DIGEST_LENGTH));
@@ -129,16 +128,19 @@ int print_transaction_info(llist_node_t node, unsigned int idx, void *args)
 
 	fprintf(file, "          \"inputs\": [\n");
 	printf("  Inputs:\n");
-	llist_for_each(transaction->inputs, print_input_info, arg_out);
+	llist_for_each(transaction->inputs, print_input_info, arg_in_out);
 	fprintf(file, "          ],\n");
 
-	fprintf(file, "          ],\n");
 	fprintf(file, "          \"outputs\": [\n");
 	printf("  Outputs:\n");
-	llist_for_each(transaction->outputs, print_output_info, arg_out);
+	llist_for_each(transaction->outputs, print_output_info, arg_in_out);
 	fprintf(file, "          ]\n");
 
-	(void)idx;
+	if (idx < num_transactions - 1)
+		fprintf(file, "        },\n");
+	else
+		fprintf(file, "        }\n");
+
 	return (0);
 }
 
@@ -187,6 +189,9 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 	transaction_t *tx = (transaction_t *)ptr[1];
 	llist_t *unspents = (llist_t *)ptr[2];
 	FILE *file = (FILE *)ptr[3];
+	unsigned int num_out;
+
+	num_out = llist_size(tx->outputs);
 
 	output = (tx_out_t *)llist_get_node_data(node);
 	if (is_output_unspent(output->hash, block, tx, unspents))
@@ -200,7 +205,11 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 		printf("    - Output Hash: %s\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		fprintf(file, "              \"status\": \"UTXO (Unspent)\"\n");
 		printf("    - Status: UTXO (Unspent)\n\n" C_RESET);
-		fprintf(file, "            }\n");
+
+	if (idx < num_out - 1)
+		fprintf(file, "        },\n");
+	else
+		fprintf(file, "        }\n");
 	} else {
 		fprintf(file, "            {\n");
 		fprintf(file, "              \"amount\": %u,\n", output->amount);
@@ -243,4 +252,3 @@ int is_output_unspent(uint8_t output_hash[SHA256_DIGEST_LENGTH], block_t *block,
 	}
 	return (0);
 }
-
