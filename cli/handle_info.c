@@ -37,6 +37,7 @@ int handle_info(state_t *state)
 	llist_t *unspent = blockchain->unspent;
 	llist_t *tx_pool = state->tx_pool;
 	uint32_t coins = 0;
+	FILE *file	= NULL;
 
 	if (!state || !blockchain)
 	{
@@ -50,22 +51,53 @@ int handle_info(state_t *state)
 		return (-1);
 	}
 
+	llist_for_each(state->blockchain->unspent, sum_unspent, &coins);
+
+	file = fopen("data_blockchain.json", "w");
+	if (file)
+	{
+		fprintf(file, "{\n");
+		fprintf(file, "  \"number_of_blocks\": %u,\n", llist_size(blockchain->chain));
+		fprintf(file, "  \"number_of_unspent_outputs\": %u,\n", llist_size(unspent));
+
+		if (tx_pool)
+		{
+			fprintf(file, "  \"transaction_pool\": {\n");
+			fprintf(file, "    \"available\": true,\n");
+			fprintf(file, "    \"pending_transactions\": %u\n", llist_size(tx_pool));
+			fprintf(file, "  },\n");
+		}
+		else
+		{
+			fprintf(file, "  \"transaction_pool\": {\n");
+			fprintf(file, "    \"available\": false\n");
+			fprintf(file, "  },\n");
+		}
+
+		fprintf(file, "  \"Total Supply HolbertonCoins\": %u\n", coins);
+		fprintf(file, "}\n");
+
+		fclose(file);
+	}
+	else
+	{
+		printf("Error: Failed to open file for writing blockchain data\n");
+		return (-1);
+	}
+
 	printf(C_GREEN "\n======================================================\n");
 	printf("   ========== Blockchain Information =============   \n");
 	printf("======================================================\n\n"C_RESET);
 
-	llist_for_each(state->blockchain->unspent, sum_unspent, &coins);
+	/* llist_for_each(state->blockchain->unspent, sum_unspent, &coins); */
 
-	printf("Number of Blocks in Blockchain: " C_GREEN "%u" C_RESET "\n",
-			llist_size(blockchain->chain));
-	printf("Number of unspent transaction outputs: " C_GREEN "%u" C_RESET "\n",
-			llist_size(unspent));
+	printf("Number of Blocks in Blockchain: " C_GREEN "%u" C_RESET "\n", llist_size(blockchain->chain));
+	printf("Number of unspent transaction outputs: " C_GREEN "%u" C_RESET "\n", llist_size(unspent));
 
 	if (tx_pool)
 	{
 		printf("Transaction pool is " C_GREEN "available" C_RESET "\n");
-		printf("Number of pending transactions in transaction pool: "
-				C_GREEN "%u" C_RESET "\n",
+		printf("Number of pending transactions in transaction pool: " C_GREEN "%u" C_RESET "\n",
 				llist_size(tx_pool));
 	}
 	else
@@ -73,8 +105,7 @@ int handle_info(state_t *state)
 		printf("Error: Transaction pool is " C_RED "NULL\n" C_RESET "\n");
 	}
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
-	printf(C_GREEN "\n======================================================\n\n"
-			 C_RESET);
+	printf(C_GREEN "\n======================================================\n\n" C_RESET);
 
 	return (0);
 }

@@ -12,11 +12,11 @@ NAME := libhblk_blockchain.a # Name of the library
 .PHONY: clean oclean flcean libhblk_blockchain.a 
 
 # Compile the object files
-clean:
+oclean:
 	$(RM) $(OBJ) # Remove object files
 
 # Remove the library
-oclean:
+clean:
 	$(RM) $(NAME) # Remove the library
 
 # Remove object files and the library

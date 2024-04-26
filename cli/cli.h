@@ -150,6 +150,7 @@ uint8_t *string_to_pub(char *address);
 
 int is_output_unspent(uint8_t output_hash[SHA256_DIGEST_LENGTH],
 						block_t *block, transaction_t *tx, llist_t *unspents);
-
+int handle_info_selection(state_t *state);
+int print_unspent(llist_node_t node, unsigned int idx, void *args);
 
 # endif /* _CLI_H_ */

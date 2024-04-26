@@ -1,5 +1,47 @@
 #include "cli.h"
 
+
+
+/**
+* handle_info_selection - handle the info selection
+* @state: CLI state
+* Return: 0 if success, -1 if failed
+*/
+int handle_info_selection(state_t *state)
+{
+	char input[256];
+
+	printf("Select info type:\n");
+	printf("1. Blockchain Info\n");
+	printf("2. Blocks Info\n");
+	printf("3. UTXOs Info\n");
+	printf("Enter option number: ");
+
+	if (fgets(input, sizeof(input), stdin) != NULL)
+	{
+		int selected_option = atoi(input);
+
+		switch (selected_option)
+		{
+			case 1:
+				return handle_info(state);
+			case 2:
+				return handle_info_block(state);
+			case 3:
+				return generate_sorted_unspent_list(state->blockchain);
+			default:
+				printf("Invalid option\n");
+				return -1;
+		}
+	}
+	else
+	{
+		printf("Error reading input\n");
+		return -1;
+	}
+}
+
+
 /**
 * find_command - find the command to execute
 * @cmd: command
@@ -86,7 +128,7 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (handle_send_custom(amount, receiver_address, state));
 		}
 	}
-	else if (strcmp(cmd, "info") == 0)
+	else if (strcmp(cmd, "info_blockchain") == 0)
 		return (handle_info(state));
 	else if (strcmp(cmd, "info_block") == 0)
 		return handle_info_block(state);
@@ -95,7 +137,7 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 		print_help();
 		return 0;
 	}
-	else if (strcmp(cmd, "list_utxo") == 0)
+	else if (strcmp(cmd, "info_utxo") == 0)
 	{
 		if (arg1)
 		{
@@ -137,6 +179,33 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 		}
 		else
 			return (handle_save(state, arg1));
+	}
+	else if (strcmp(cmd, "info") == 0)
+	{
+		if (arg1)
+		{
+			if (strcmp(arg1, "blockchain") == 0)
+			{
+				return handle_info(state);
+			}
+			else if (strcmp(arg1, "block") == 0)
+			{
+				return handle_info_block(state);
+			}
+			else if (strcmp(arg1, "utxo") == 0)
+			{
+				return generate_sorted_unspent_list(state->blockchain);
+			}
+			else
+			{
+				printf("Invalid option\n");
+				return -1;
+			}
+		}
+		else
+		{
+			return handle_info_selection(state);
+		}
 	}
 	else
 	{
