@@ -11,15 +11,40 @@ int handle_send_custom(int amount, char *receiver_address, state_t *state)
 {
 	EC_KEY *receiver_key = NULL;
 	transaction_t *tx = NULL;
-	llist_t *selected_utxos = NULL;
+	llist_t *selected_utxos = NULL, *new_tx_out = NULL;
+	uint32_t size = 0, sum_selected = 0, i;
+	/* char *dummy_line; */
 
-	selected_utxos = utxo_list_selection(state);
 	str_to_key(receiver_address, &receiver_key);
-	if (selected_utxos)
+	system("clear");
+	while(1)
 	{
-		tx = transaction_create_custom(state->wallet, receiver_key, amount,
-							state->blockchain->unspent, state->tx_pool,
-							selected_utxos);
+		selected_utxos = utxo_list_selection(state);
+		if (llist_size(selected_utxos) == 0)
+		{
+			system("clear");
+			printf("\nNo UTXOs selected----\n");
+		}
+		else
+			break;
+	}
+	size = llist_size(selected_utxos);
+	for (i = 0; i < size; i++)
+	{
+		unspent_tx_out_t *utxo = NULL;
+
+		utxo = llist_get_node_at(selected_utxos, i);
+		sum_selected += utxo->out.amount;
+	}
+
+	readline("");
+	system("clear");
+
+	new_tx_out = tx_out_custom_list(state, receiver_key, amount, sum_selected);
+	if (selected_utxos && new_tx_out)
+	{
+		tx = transaction_create(state->wallet, receiver_key, amount,
+								selected_utxos, state->tx_pool, new_tx_out);
 	}
 	else
 	{

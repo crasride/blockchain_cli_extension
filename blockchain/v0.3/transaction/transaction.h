@@ -102,7 +102,7 @@ void print_utxo_message(void);
 transaction_t *transaction_create(EC_KEY const *sender,
 									EC_KEY const *receiver,
 									uint32_t amount, llist_t *all_unspent,
-									llist_t *tx_pool);
+									llist_t *tx_pool, llist_t *new_tx_out);
 
 /* Functions Task 6*/
 int transaction_is_valid(transaction_t const *transaction,
@@ -133,6 +133,7 @@ int select_unspent_in(llist_node_t node, unsigned int idx, void *args);
 transaction_t *transaction_create_custom(EC_KEY const *sender,
 									EC_KEY const *receiver,
 									uint32_t amount, llist_t *all_unspent,
-									llist_t *tx_pool, llist_t *selected_unspent);
+									llist_t *tx_pool, llist_t *selected_unspent,
+									llist_t *selected_tx_out);
 
 #endif /* _TRANSACTION_H_ */

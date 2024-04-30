@@ -11,9 +11,8 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <sys/types.h>
+#include <stdbool.h>
 /* #include <sys/wait.h> */
-#include <ncurses.h>
-#include <curses.h>
 
 #include "../crypto/hblk_crypto.h"
 #include "../blockchain/v0.3/blockchain.h"
@@ -23,6 +22,7 @@
 #include <readline/history.h>
 
 #define ADDRESS_MAX_LEN 42
+#define MAX_TOKENS 1024
 
 #define C_GREEN   "\x1b[32m"
 #define C_RESET   "\x1b[0m"
@@ -140,6 +140,8 @@ int compares_unspent_tx_out(unspent_tx_out_t *first,
 
 llist_t *generate_own_sorted_unspent_list(state_t *state);
 llist_t *utxo_list_selection(state_t *state);
+llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
+							int sum_selected);
 
 /* tools.c*/
 void *llist_get_node_data(llist_node_t node);
@@ -151,6 +153,5 @@ uint8_t *string_to_pub(char *address);
 int is_output_unspent(uint8_t output_hash[SHA256_DIGEST_LENGTH],
 						block_t *block, transaction_t *tx, llist_t *unspents);
 int handle_info_selection(state_t *state);
-int print_unspent(llist_node_t node, unsigned int idx, void *args);
 
 # endif /* _CLI_H_ */
