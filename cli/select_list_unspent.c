@@ -126,6 +126,13 @@ llist_t *utxo_list_selection(state_t *state)
 	bool *checkboxes = (bool *)calloc(size, sizeof(bool)); /* Array of checkboxes */
 	char **tokens_selected;
 
+	if (size == 0)
+	{
+		printf("No unspent transactions available\n");
+		readline("");
+		return (NULL);
+	}
+
 	printf("Number of utxos: %d\n", size);
 	/* Display initial checkboxes */
 	for (i = 0; i < size; i++)

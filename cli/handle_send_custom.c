@@ -20,6 +20,11 @@ int handle_send_custom(int amount, char *receiver_address, state_t *state)
 	while(1)
 	{
 		selected_utxos = utxo_list_selection(state);
+		if (!selected_utxos)
+		{
+			system("clear");
+			return (0);
+		}
 		if (llist_size(selected_utxos) == 0)
 		{
 			system("clear");

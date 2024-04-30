@@ -49,7 +49,7 @@ transaction_t *transaction_create(EC_KEY const *sender,
 		unspent_tx_out_t *unspent = llist_get_node_at(unspents, i);
 
 		select_unspent_in(unspent, i, args);
-		if (unspent_amount >= amount)
+		if (!tr_out && unspent_amount >= amount)
 			break;
 	}
 	if (unspent_amount < amount)
