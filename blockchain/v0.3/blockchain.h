@@ -158,8 +158,8 @@ int hash_matches_difficulty(uint8_t const hash[SHA256_DIGEST_LENGTH],
 void block_mine(block_t *block);
 uint32_t blockchain_difficulty(blockchain_t const *blockchain);
 
-# define BLOCK_GENERATION_INTERVAL 1
-# define DIFFICULTY_ADJUSTMENT_INTERVAL 5
+# define BLOCK_GENERATION_INTERVAL 10
+# define DIFFICULTY_ADJUSTMENT_INTERVAL 1
 
 /**
  * struct block_header_s - struct to hold and init header

@@ -154,4 +154,6 @@ int is_output_unspent(uint8_t output_hash[SHA256_DIGEST_LENGTH],
 						block_t *block, transaction_t *tx, llist_t *unspents);
 int handle_info_selection(state_t *state);
 
+bool is_number(char *string);
+int handle_mine_auto(state_t *state, int nb_block, int interval);
 # endif /* _CLI_H_ */

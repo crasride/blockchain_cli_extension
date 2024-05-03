@@ -91,9 +91,23 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 	{
 		if (arg1)
 		{
-			printf("Usage: mine\n");
-			printf("Too many arguments\n");
-			return (-1);
+			if (is_number(arg1))
+			{
+				if (!arg2)
+					arg2 = "0";
+				if (is_number(arg2))
+					return (handle_mine_auto(state, atoi(arg1), atoi(arg2)));
+				else
+				{
+					printf("Argument 2 must be a number\n");
+					return (-1);
+				}
+			}
+			else
+			{
+				printf("Argument1 must be a number\n");
+				return (-1);
+			}
 		}
 		else
 			return (handle_mine(state));
