@@ -52,7 +52,9 @@ int handle_info_block(state_t *state)
 			fprintf(file, "    \"Block %u\": [\n", block->info.index);
 			fprintf(file, "      {\n");
 			fprintf(file, "        \"index\": %u,\n", block->info.index);
+			fprintf(file, "        \"difficulty\": %u,\n", block->info.difficulty);
 			fprintf(file, "        \"timestamp\": %lu,\n", block->info.timestamp);
+			fprintf(file, "        \"nonce\": %lu,\n", block->info.nonce);
 			fprintf(file, "        \"previous_block_hash\": \"%s\",\n", bytes_to_hex(block->info.prev_hash, SHA256_DIGEST_LENGTH));
 			fprintf(file, "        \"block_hash\": \"%s\",\n", bytes_to_hex(block->hash, SHA256_DIGEST_LENGTH));
 
@@ -62,7 +64,9 @@ int handle_info_block(state_t *state)
 			printf("======================================================\n\n"C_RESET);
 			printf("\n");
 			printf("Block Index: " C_GREEN "%u" C_RESET "\n", block->info.index);
+			printf("Difficulty: " C_GREEN "%u" C_RESET "\n", block->info.difficulty);
 			printf("Timestamp: " C_GREEN "%lu" C_RESET "\n", block->info.timestamp);
+			printf("Nonce: " C_GREEN "%lu" C_RESET "\n", block->info.nonce);
 			printf("Previous Block Hash: "C_GREEN "%s" C_RESET "\n", bytes_to_hex(block->info.prev_hash, SHA256_DIGEST_LENGTH));
 			printf("Block Hash: " C_GREEN "%s" C_RESET "\n", bytes_to_hex(block->hash, SHA256_DIGEST_LENGTH));
 
