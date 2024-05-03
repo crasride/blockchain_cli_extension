@@ -6,7 +6,7 @@ CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu90 -ggdb3 -Wno-deprecated-decla
 		-I. -I../blockchain/v0.3/ -I../blockchain/v0.3/transaction/ -I../blockchain/v0.3/provided/ -I../crypto
 
 # Linker flags
-LIBS = -L../blockchain/v0.3 -lhblk_blockchain -L../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread -lreadline -lncurses
+LIBS = -L../blockchain/v0.3 -lhblk_blockchain -L../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread -lreadline
 
 # Source files
 SRC0 = cli.c cleanup.c handle_exit.c handle_info.c handle_mine.c handle_send.c \
