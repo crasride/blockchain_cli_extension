@@ -25,7 +25,7 @@ int handle_info_block(state_t *state)
 	void *arg_tx[3];
 	FILE *file = NULL;
 
-	arg_tx[1] = (void *)blockchain;
+	arg_tx[1] = (void *)state;
 
 	if (!chain)
 	{
@@ -112,7 +112,7 @@ int print_transaction_info(llist_node_t node, unsigned int idx, void *args)
 {
 	void **ptr = args;
 	block_t *block = (block_t *)ptr[0];
-	blockchain_t *blockchain = (blockchain_t *)ptr[1];
+	state_t *state = (state_t *)ptr[1];
 	FILE *file = (FILE *)ptr[2];
 	transaction_t *transaction = (transaction_t *)node;
 	void *arg_in_out[4];
@@ -120,7 +120,7 @@ int print_transaction_info(llist_node_t node, unsigned int idx, void *args)
 
 	arg_in_out[0] = (void *)block;
 	arg_in_out[1] = (void *)transaction;
-	arg_in_out[2] = (void *)blockchain->unspent;
+	arg_in_out[2] = (void *)state;
 	arg_in_out[3] = (void *)file;
 
 
@@ -191,10 +191,13 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 
 	block_t *block = (block_t *)ptr[0];
 	transaction_t *tx = (transaction_t *)ptr[1];
-	llist_t *unspents = (llist_t *)ptr[2];
+	state_t *state = (state_t *)ptr[2];
 	FILE *file = (FILE *)ptr[3];
 	unsigned int num_out;
+	llist_t *unspents = state->blockchain->unspent;
+	uint8_t pub_wallet[EC_PUB_LEN] = {0};
 
+	ec_to_pub(state->wallet, pub_wallet);
 	num_out = llist_size(tx->outputs);
 
 	output = (tx_out_t *)llist_get_node_data(node);
@@ -202,13 +205,16 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 	{
 		fprintf(file, "            {\n");
 		fprintf(file, "              \"amount\": %u,\n", output->amount);
-		printf(C_GREEN "    - Amount: %u\n", output->amount);
+		printf("    - Amount: %u\n", output->amount);
 		fprintf(file, "              \"public_address\": \"%s\",\n", bytes_to_hex(output->pub, EC_PUB_LEN));
-		printf("    - Public Address: %s\n", bytes_to_hex(output->pub, EC_PUB_LEN));
+		if (strcmp(bytes_to_hex(output->pub, EC_PUB_LEN), bytes_to_hex(pub_wallet, EC_PUB_LEN)) == 0)
+			printf("    - Public Address:"C_PURPLE" %s\n" C_RESET, bytes_to_hex(output->pub, EC_PUB_LEN));
+		else
+			printf("    - Public Address: %s\n", bytes_to_hex(output->pub, EC_PUB_LEN));
 		fprintf(file, "              \"output_hash\": \"%s\",\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		printf("    - Output Hash: %s\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		fprintf(file, "              \"status\": \"UTXO (Unspent)\"\n");
-		printf("    - Status: UTXO (Unspent)\n\n" C_RESET);
+		printf("    - Status: "C_GREEN"Unspent\n\n" C_RESET);
 
 	if (idx < num_out - 1)
 		fprintf(file, "        },\n");
@@ -223,7 +229,7 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 		fprintf(file, "              \"output_hash\": \"%s\",\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		printf("    - Output Hash: %s\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		fprintf(file, "              \"status\": \"Spent\"\n");
-		printf("    - Status: Spent\n\n");
+		printf("    - Status: "C_RED"Spent\n\n" C_RESET);
 		fprintf(file, "            }\n");
 
 	}

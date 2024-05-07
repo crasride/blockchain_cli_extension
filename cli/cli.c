@@ -28,7 +28,7 @@ int handle_info_selection(state_t *state)
 			case 2:
 				return handle_info_block(state);
 			case 3:
-				return generate_sorted_unspent_list(state->blockchain);
+				return generate_unspent_list(state->blockchain);
 			default:
 				printf("Invalid option\n");
 				return -1;
@@ -161,7 +161,7 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 		}
 		else
 		{
-			return generate_sorted_unspent_list(state->blockchain);
+			return generate_unspent_list(state->blockchain);
 		}
 	}
 	else if (strcmp(cmd, "clear") == 0)
@@ -206,9 +206,13 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			{
 				return handle_info_block(state);
 			}
-			else if (strcmp(arg1, "utxo") == 0)
+			else if (strcmp(arg1, "utxo") == 0 && strcmp(arg2, "sorted") == 0)
 			{
 				return generate_sorted_unspent_list(state->blockchain);
+			}
+			else if (strcmp(arg1, "utxo") == 0)
+			{
+				return generate_unspent_list(state->blockchain);
 			}
 			else
 			{

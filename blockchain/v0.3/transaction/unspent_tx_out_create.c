@@ -24,9 +24,4 @@ unspent_tx_out_t *unspent_tx_out_create(
 	memcpy(&unspent->out, out, sizeof(unspent->out));
 
 	return (unspent);
-	/* //TODO: */
-	/* 2 output avec meme receiver, meme amount, (donc meme output hash) */
-	/* qui vont dans la meme transaction (donc meme tx_id) et donc meme */
-	/* block_hash (car dans le meme tx): Ils sont donc complètement jumeaux ! */
-	/* Comment les différencier ??? */
 }
