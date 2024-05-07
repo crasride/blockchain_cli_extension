@@ -133,12 +133,13 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args);
 /* unspent_list.c */
 int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg);
 int generate_sorted_unspent_list(blockchain_t *blockchain);
+int generate_unspent_list(blockchain_t *blockchain);
 int compares_unspent_tx_out(unspent_tx_out_t *first,
 										unspent_tx_out_t *second, void *arg);
 
 /* select_list_unspent.c */
 
-llist_t *generate_own_sorted_unspent_list(state_t *state);
+llist_t *generate_own_unspent_list(state_t *state);
 llist_t *utxo_list_selection(state_t *state);
 llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 							int sum_selected);

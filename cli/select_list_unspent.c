@@ -19,11 +19,11 @@ int select_unspent(llist_node_t node, unsigned int idx, void *args)
 }
 
 /**
-* generate_own_sorted_unspent_list - generate short unspent list
+* generate_own_unspent_list - generate short unspent list
 * @state: CLI state
 * Return: list of own unspent tx_out
 */
-llist_t *generate_own_sorted_unspent_list(state_t *state)
+llist_t *generate_own_unspent_list(state_t *state)
 {
 	uint8_t pub[EC_PUB_LEN];
 	llist_t *tx_pool = state->tx_pool;
@@ -120,7 +120,7 @@ int len(char **amounts)
 llist_t *utxo_list_selection(state_t *state)
 {
 	llist_t *selected_utxos = llist_create(MT_SUPPORT_FALSE);
-	llist_t *current_own_unspent = generate_own_sorted_unspent_list(state);
+	llist_t *current_own_unspent = generate_own_unspent_list(state);
 	int size = llist_size(current_own_unspent), i, sum_selected = 0, size_selected;
 	int index = 0;
 	bool *checkboxes = (bool *)calloc(size, sizeof(bool)); /* Array of checkboxes */

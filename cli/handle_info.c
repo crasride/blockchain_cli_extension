@@ -38,7 +38,10 @@ int handle_info(state_t *state)
 	llist_t *tx_pool = state->tx_pool;
 	uint32_t coins = 0;
 	FILE *file	= NULL;
+	uint8_t pub[EC_PUB_LEN] = {0};
 
+	if (state->wallet)
+		ec_to_pub(state->wallet, pub);
 	if (!state || !blockchain)
 	{
 		printf("Error: State or Blockchain is NULL\n");
@@ -74,7 +77,8 @@ int handle_info(state_t *state)
 			fprintf(file, "  },\n");
 		}
 
-		fprintf(file, "  \"Total Supply HolbertonCoins\": %u\n", coins);
+		fprintf(file, "  \"Total Supply HolbertonCoins\": \"%u\",\n", coins);
+		fprintf(file, "  \"wallet_loaded\": \"%s\"\n", bytes_to_hex(pub, EC_PUB_LEN));
 		fprintf(file, "}\n");
 
 		fclose(file);
@@ -105,6 +109,7 @@ int handle_info(state_t *state)
 		printf("Error: Transaction pool is " C_RED "NULL\n" C_RESET "\n");
 	}
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
+	printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
 	printf(C_GREEN "\n======================================================\n\n" C_RESET);
 
 	return (0);
