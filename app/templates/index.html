@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Block Diagram</title>
+    <!-- Enlaces a bibliotecas de Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly; /* Ajusta el espacio entre las zonas */
+            background-color: rgb(67, 68, 68);
+        }
+        .graph-zone, .block-zone, .blockchain-zone {
+            margin-top: 20px; /* Espacio en la parte superior */
+            margin-bottom: 20px; /* Espacio entre las zonas y el borde inferior */
+        }
+
+        /* Estilos para los gráficos */
+        .graph-zone {
+            background-color: #080000;
+            width: 35%; /* Ancho del área de gráficos */
+            height: 30%;
+            top: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+            border-radius: 10px; /* Agregar bordes redondeados */
+        }
+
+        .graph-zone::-webkit-scrollbar {
+            width: 0px; /* Ancho de la barra de desplazamiento */
+        }
+
+        .graph-zone::-webkit-scrollbar-track {
+            background: transparent; /* Fondo transparente */
+        }
+
+        .chartArea {
+            height: 300px;
+            /* Alto del área del gráfico */
+            margin-bottom: 20px;
+            /* Margen inferior */
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chartArea:last-child {
+            margin-bottom: 0;
+        }
+
+        .graph-zone h2 {
+        position: sticky;
+        top: 0; /* Fija el título en la parte superior */
+        padding: 10px 0; /* Ajusta el relleno del título */
+        margin: 0; /* Elimina el margen para que se ajuste completamente */
+        z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+        text-align: left; /* Centrar el texto horizontalmente */
+        color: #f4f1f1;
+        }
+
+        .graph-zone p {
+            font-size: 18px; /* Aumentar el tamaño del texto */
+            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+        }
+
+
+        /* Estilos para los bloques */
+        
+        .block-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .block {
+            position: relative; /* Añadido */
+            left: calc(13% - 50px); /* Ajustar la posición horizontal */
+            display: inline-block;
+            width: 75px;
+            height: 75px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            animation: spin 15s infinite linear;
+            margin-right: 70px; /* Espacio entre bloques */
+            margin-bottom: 30px; /* Espacio adicional entre las filas */
+        }
+
+        .block-zone {
+            background-color: #010007;
+            width: 30%;
+            height: -5%;
+            padding: 25px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+            border-radius: 10px; /* Agregar bordes redondeados */
+        }
+
+        .block-zone::-webkit-scrollbar {
+            width: 0px; /* Ancho de la barra de desplazamiento */
+        }
+
+        .block-zone::-webkit-scrollbar-track {
+            background: transparent; /* Fondo transparente */
+        }
+
+        .block:hover {
+            animation-play-state: paused;
+            /* Pausa la animación al pasar el mouse */
+        }
+
+        .face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            font-size: 12px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            opacity: 0.8;
+            color: black;
+            font-weight: bold;
+            font-size: 50px;
+            opacity: 1;
+            border-radius: 10px; /* Agregar esquinas redondeadas */
+        }
+
+        .front {
+            background-image: url('img/holberton_block.png');
+            transform: rotateY(0deg) translateZ(50px);
+        }
+
+        .back {
+            background-image: url('img/holberton_block.png');
+            transform: rotateY(180deg) translateZ(50px);
+        }
+
+        .top {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+
+        .bottom {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+
+        .right {
+            transform: rotateY(90deg) translateZ(50px);
+        }
+
+        .left {
+            transform: rotateY(-90deg) translateZ(50px);
+        }
+
+        @keyframes spin {
+            100% { transform: rotateY(360deg); }
+        }
+
+
+        /* Estilos para los detalles del bloque */
+        .block-details {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 9999;
+        }
+        .block-details h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .block-details p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .block-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .block-details li {
+            margin-bottom: 10px;
+        }
+        .block-details button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .block-details button:hover {
+            background-color: #0056b3;
+        }
+
+        .block-zone h2 {
+        position: sticky;
+        top: 0; /* Fija el título en la parte superior */
+        padding: 10px 0; /* Ajusta el relleno del título */
+        margin: 0; /* Elimina el margen para que se ajuste completamente */
+        z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+        text-align: center; /* Centrar el texto horizontalmente */
+        color: #f5efef;
+        }
+
+        .block-zone p {
+            font-size: 18px; /* Aumentar el tamaño del texto */
+            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+        }
+
+
+        /* Estilos para la zona de blockchain */
+        .blockchain-zone {
+            background-color: #030000;
+            width: 30%;
+            height: 30%;
+            margin-bottom: 20px; 
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px; /* Agregar bordes redondeados */
+            color: #fff; /* Cambiar el color del texto a blanco */ 
+        }
+        
+        .blockchain-zone p {
+            font-size: 14px; /* Aumentar el tamaño del texto */
+        }
+        
+        .blockchain-zone p:last-child {
+            margin-bottom: 0; /* Eliminar el espacio después del último párrafo */
+        }
+        
+        .blockchain-zone h2 {
+            margin-top: 5px; /* Ajustar el margen superior */
+            font-size: 24px; /* Aumentar el tamaño del título */
+            text-align: center; /* Centrar el texto horizontalmente */
+        }
+
+        .wallet-style {
+            color: rgb(240, 240, 240);
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+
+        /* Estilos para la zona de UTXO */
+        .blockchain-utxo-container {
+            display: flex;
+            flex-direction: column; /* Cambiado a 'column' para que las zonas blockchain y UTXO se apilen verticalmente */
+            gap: 20px; /* Ajustado el espacio entre las zonas */
+        }
+
+        .UTXO-zone {
+            background-color: #040000;
+            height: 690px; 
+            width: 30%; /* Ajusta el ancho */
+            float: right; /* Alinea a la derecha */
+            margin-top: -710px; /* Ajusta el margen superior para subirlo */
+            margin-right: 20px; /* Ajusta el margen derecho */
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px; /* Agregar bordes redondeados */
+            color: #fff; /* Cambiar el color del texto a blanco */
+            overflow: auto; /* Agregar desplazamiento vertical */
+        }
+        
+        .UTXO-zone p {
+            font-size: 18px; /* Aumentar el tamaño del texto */
+            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+        }
+        
+        .UTXO-zone p:last-child {
+            margin-bottom: 0; /* Eliminar el espacio después del último párrafo */
+        }
+        
+        .UTXO-zone h2 {
+            margin-top: 10px; /* Ajustar el margen superior */
+            font-size: 24px; /* Aumentar el tamaño del título */
+            text-align: center; /* Centrar el texto horizontalmente */
+        }
+
+
+    /* Estilos para los detalles del coin */
+    .coin {
+        display: inline-block;
+        background: #FFDE00;
+        width: 6em; /* Reducir el tamaño a la mitad */
+        height: 6em; /* Reducir el tamaño a la mitad */
+        border-radius: 50%;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: spin 15s linear infinite;
+    }
+
+    .coin:before {
+        background-color: #FF9900;
+        position: absolute;
+        border-radius: 50%;
+        content: '';
+        height: 6em; /* Reducir el tamaño a la mitad */
+        width: 6em; /* Reducir el tamaño a la mitad */
+        transform: translateZ(-0.375em); /* Reducir a la mitad */
+    }
+
+    .coin:after {
+        background-image: url('img/holberton_block.png');
+        background-size: cover;
+        content: '';
+        position: absolute;
+        height: 6em; /* Reducir el tamaño a la mitad */
+        width: 6em; /* Reducir el tamaño a la mitad */
+        border-radius: 50%;
+        transform: translateZ(-0.376em); 
+    }
+
+    .tails {
+        background-color: #fdfdfb;
+        position: absolute;
+        border-radius: 50%;
+        text-align: center;
+        color: black;
+        display: flex; /* Establecer el contenedor como flexbox */
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        font-weight: bold;
+        content: '';
+        height: 6em; /* Reducir el tamaño a la mitad */
+        width: 6em; /* Reducir el tamaño a la mitad */
+        transform: translateZ(-0.0025em); /* Reducir a la mitad */
+        border: 1px solid #FF9900;
+    }
+
+    .heads {
+        background-color: #FFDE00;
+        position: absolute;
+        border-radius: 50%;
+        content: '';
+        height: 6em; /* Reducir el tamaño a la mitad */
+        width: 6em; /* Reducir el tamaño a la mitad */
+        transform: translateZ(-0.3775em); /* Reducir a la mitad */
+        
+    }
+
+    .coin:hover {
+        animation-play-state: paused;
+        /* Pausa la animación al pasar el mouse */
+    }
+
+        
+        .UTXO-zone:hover {
+            animation-play-state: paused;
+            /* Pausa la animación al pasar el mouse */
+        }
+
+        .UTXO-zone::-webkit-scrollbar {
+            width: 0px; /* Ancho de la barra de desplazamiento */
+        }
+
+        .UTXO-zone::-webkit-scrollbar-track {
+            background: transparent; /* Fondo transparente */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Zona de Bloques -->
+        <div class="block-zone">
+            <h2>Block List Zone</h2>
+            <div id="blockchain" style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    <div class="block" onclick="buttonClicked()">
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+                    <div class="face left"></div>
+                    <div class="face right"></div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Zona de Gráficos -->
+        <div class="graph-zone">
+            <h2>Graph Zone</h2>
+            <div class="chartArea" id="chartArea1"></div>
+            <div class="chartArea" id="chartArea3"></div>
+            <div class="chartArea" id="chartArea2"></div>
+            <div class="chartArea" id="chartArea4"></div>
+        </div>
+
+        <!-- Zona de Blockchain -->
+        <div class="blockchain-zone">
+            <h2>Blockchain Zone</h2>
+            <div id="blockchainData">
+                <p id="walletloadValue" class="wallet-style"></p>
+                <script>
+                    // Variable para almacenar el valor del wallet
+                    let walletValue;
+
+                    function fetchBlockchainData() {
+                        fetch('/get_blockchain_data')
+                            .then(response => response.json())
+                            .then(data => {
+                                const utxoZone = document.getElementById('blockchainData');
+                                utxoZone.innerHTML = ''; 
+
+                                // los datos de data_blockchain.json
+                                const numberOfBlocks = document.createElement('p');
+                                numberOfBlocks.textContent = `Number of Blocks: ${data.number_of_blocks}`;
+                                utxoZone.appendChild(numberOfBlocks);
+
+                                const numberOfUnspentOutputs = document.createElement('p');
+                                numberOfUnspentOutputs.textContent = `Number of Unspent Outputs: ${data.number_of_unspent_outputs}`;
+                                utxoZone.appendChild(numberOfUnspentOutputs);
+
+                                const transactionPool = document.createElement('p');
+                                transactionPool.textContent = `Transaction Pool Available: ${data.transaction_pool.available ? 'Yes' : 'No'}`;
+                                utxoZone.appendChild(transactionPool);
+
+                                const pendingTransactions = document.createElement('p');
+                                pendingTransactions.textContent = `Pending Transactions: ${data.transaction_pool.pending_transactions}`;
+                                utxoZone.appendChild(pendingTransactions);
+
+                                const totalSupply = document.createElement('p');
+                                totalSupply.textContent = `Total Supply HolbertonCoins: ${data['Total Supply HolbertonCoins']}`;
+                                utxoZone.appendChild(totalSupply);
+
+                                // Mostrar el valor del wallet
+                                walletValue = data['wallet_loaded'];
+
+                                const walletload = document.createElement('span');
+                                walletload.textContent = `Wallet Active: ${data['wallet_loaded']}`;
+                                walletload.classList.add('wallet-style');
+                                utxoZone.appendChild(walletload);
+
+                                // Mostrar el valor del wallet por console
+                                console.log('Valor del wallet recuperado:', walletValue);
+                            })
+                            .catch(error => console.error('Error fetching blockchain data:', error));
+                    }
+                    fetchBlockchainData();
+                    /* setInterval(fetchBlockchainData, 10000); */
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- Zona de UTXO -->
+    <div class="UTXO-zone">
+        <h2>UTXO Zone</h2>
+        <div id="utxoBlocks"></div>
+            <script>
+                function fetchUTXOData() {
+                    fetch('/get_utxo_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            const utxoZone = document.getElementById('utxoData');
+                            utxoZone.innerHTML = '';
+
+                            // los datos y muestra cada registro
+                            data.forEach(entry => {
+                                const entryParagraph = document.createElement('p');
+                                entryParagraph.textContent = `Block Hash: ${entry.block_hash}, Transaction ID: ${entry.transaction_id}, Amount: ${entry.output.amount}`;
+                                utxoZone.appendChild(entryParagraph);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching UTXO data:', error));
+                }
+
+                fetchUTXOData();
+                /*
+                setInterval(fetchUTXOData, 10000);*/
+
+                function fetchUTXOData() {
+                    fetch('/get_utxo_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            const utxoBlocksContainer = document.getElementById('utxoBlocks');
+                            utxoBlocksContainer.innerHTML = '';
+
+                            // Iterar sobre los datos de UTXO
+                            data.forEach(entry => {
+                                const utxoBlock = document.createElement('div');
+                                utxoBlock.classList.add('coin');
+
+                                // Contenido del bloque
+                                utxoBlock.innerHTML = `
+                                    <div class="tails">${entry.output.amount}</div>
+                                    <div class="heads"></div>
+
+                                `;
+                
+                                // Escuchar el evento click en cada bloque de UTXO
+                                utxoBlock.addEventListener('click', () => {
+                                    displayUTXODetails(entry);
+                                });
+                
+                                // Agregar el bloque al contenedor
+                                utxoBlocksContainer.appendChild(utxoBlock);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching UTXO data:', error));
+                }
+                
+                
+                // Función para mostrar los detalles del bloque UTXO
+                function displayUTXODetails(entry) {
+                    // Mostrar los detalles del bloque UTXO en el contenedor de detalles del bloque UTXO
+                    document.getElementById('utxoBlockHash').innerText = entry.block_hash;
+                    document.getElementById('utxoTransactionId').innerText = entry.transaction_id;
+                    document.getElementById('utxoAmount').innerText = entry.output.amount;
+                    document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
+                    document.getElementById('utxoOutputHash').innerText = entry.output.output_hash;
+
+                   // Comparar el valor de public_address con el valor del wallet
+                    if (entry.output.public_address === walletValue) {
+                        // Si son iguales, agregar un campo con valor "active"
+                        document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
+                        document.getElementById('utxoWalletActive').innerText = 'Active';
+                    } else {
+                        // Si son diferentes, agregar un campo con valor "No"
+                        document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
+                        document.getElementById('utxoWalletActive').innerText = 'No';
+                    }
+
+                    // Mostrar el contenedor de detalles del bloque UTXO
+                    document.getElementById('utxoBlockDetails').style.display = 'block';
+                }
+
+                // Función para cerrar los detalles del bloque UTXO
+                function closeUTXODetails() {
+                    document.getElementById('utxoBlockDetails').style.display = 'none';
+                }
+            </script>
+        </div>
+    </div>
+
+    <!-- Detalles del bloque UTXO -->
+    <div class="block-details" id="utxoBlockDetails" style="max-height: 80%; overflow-y: auto; display: none;">
+        <h2>UTXO Block Details</h2>
+        <p><strong>Block Hash:</strong> <span id="utxoBlockHash"></span></p>
+        <p><strong>Transaction ID:</strong> <span id="utxoTransactionId"></span></p>
+        <p><strong>Amount:</strong> <span id="utxoAmount"></span></p>
+        <p><strong>Public Address:</strong> <span id="utxoPublicAddress"></span></p>
+        <p><strong>Output Hash:</strong> <span id="utxoOutputHash"></span></p>
+        <p><strong>Wallet Active:</strong> <span id="utxoWalletActive"></span></p>
+        <button onclick="closeUTXODetails()">Close</button>
+    </div>
+
+    <!-- Detalles del bloque -->
+    <!-- <div class="block-details" id="blockDetails" style="max-height: 80%; overflow-y: auto;"> -->
+    <div class="block-details" id="blockDetails" style="max-height: 80%; overflow-y: auto; display: none;">
+        <h2>Block Details</h2>
+        <p><strong>Index:</strong> <span id="blockIndex"></span></p>
+        <p><strong>Difficulty:</strong> <span id="blockdifficulty"></span></p>
+        <p><strong>Timestamp:</strong> <span id="blockTimestamp"></span></p>
+        <p><strong>Nonce:</strong> <span id="blocknonce"></span></p>
+        <p><strong>Previous block hash:</strong> <span id="blockprevious_block_hash"></span></p>
+        <p><strong>Block Hash:</strong> <span id="blockHash"></span></p>
+        <p><strong>Block Size:</strong> <span id="blockSize"></span></p>
+        <p><strong>Number of Transactions:</strong> <span id="blockNumTransactions"></span></p>
+        <h3>Transactions:</h3>
+        <ul id="blockTransactions"></ul>
+        <button onclick="closeBlockDetails()">Close</button>
+    </div>
+</body>
+
+</html>
+<script>
+    function fetchData() {
+        fetch('/get_json_data')
+            .then(response => response.json())
+            .then(data => {
+                // primer gráfico con los datos recibidos
+                const chartData1 = {
+                    x: data.map(block => block.index),
+                    y: data.map(block => block.num_transactions),
+                    type: 'bar'
+                };
+                const layout1 = {
+                    title: 'Number of Transactions in Each Block',
+                    xaxis: {
+                        title: 'Block Index'
+                    },
+                    yaxis: {
+                        title: 'Number of Transactions'
+                    }
+                };
+                Plotly.newPlot('chartArea1', [chartData1], layout1);
+
+                // segundo gráfico con los datos de transacciones gastadas
+                const spentTransactions = data.map(block => block.transactions.filter(transaction => transaction.outputs.some(output => output.status === 'Spent')).length);
+                const chartData2 = {
+                    x: data.map(block => block.index),
+                    y: spentTransactions,
+                    type: 'bar',
+                    name: 'Spent Transactions'
+                };
+
+                // tercer gráfico con los datos de transacciones no gastadas
+                const unspentTransactions = data.map(block => block.transactions.filter(transaction => transaction.outputs.some(output => output.status === 'UTXO (Unspent)')).length);
+                const chartData3 = {
+                    x: data.map(block => block.index),
+                    y: unspentTransactions,
+                    type: 'bar',
+                    name: 'Unspent Transactions'
+                };
+
+                const layout23 = {
+                    title: 'Number of Spent and Unspent Transactions in Each Block',
+                    xaxis: {
+                        title: 'Block Index'
+                    },
+                    yaxis: {
+                        title: 'Number of Transactions'
+                    },
+                    barmode: 'stack'
+                };
+                Plotly.newPlot('chartArea2', [chartData2, chartData3], layout23);
+
+                // cuarto gráfico con los datos recibidos de monto de transacciones
+                const totalAmount = data.map(block => block.transactions.reduce((acc, cur) => acc + cur.outputs.reduce((acc, cur) => cur.status === 'UTXO (Unspent)' ? acc + cur.amount : acc, 0), 0));
+                const chartData4 = {
+                    x: data.map(block => block.index),
+                    y: totalAmount,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    marker: {
+                        color: 'rgb(255, 127, 14)' // Color naranja
+                    }
+                };
+                const layout4 = {
+                    title: 'Total Amount of UTXO (Unspent) Transactions Over Time',
+                    xaxis: {
+                        title: 'Block Index'
+                    },
+                    yaxis: {
+                        title: 'Total Amount'
+                    }
+                };
+                Plotly.newPlot('chartArea4', [chartData4], layout4);
+
+                // quinto gráfico con los datos del tamaño del bloque
+                const blockSize = data.map(block => block.block_size);
+                const chartData5 = {
+                    x: data.map(block => block.index),
+                    y: blockSize,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    marker: {
+                        color: 'rgb(31, 119, 180)' // Color azul
+                    }
+                };
+                const layout5 = {
+                    title: 'Block Size (Bytes) Over Time',
+                    xaxis: {
+                        title: 'Block Index'
+                    },
+                    yaxis: {
+                        title: 'Block Size'
+                    }
+                };
+                Plotly.newPlot('chartArea3', [chartData5], layout5);
+
+                // Crear los bloques
+                const blockchainDiv = document.getElementById('blockchain');
+                blockchainDiv.innerHTML = '';
+                data.forEach(block => {
+                    const blockDiv = document.createElement('div');
+                    blockDiv.classList.add('block');
+                    blockDiv.innerHTML = `
+                            <div class="face front"></div>
+                            <div class="face back"></div>
+                            <div class="face top"></div>
+                            <div class="face bottom"></div>
+                            <div class="face left">${block.index}</div>
+                            <div class="face right">${block.index}</div>
+                            
+                        `;
+                    blockDiv.addEventListener('click', () => {
+                        displayBlockDetails(block);
+                    });
+                    blockchainDiv.appendChild(blockDiv);
+                });
+
+            })
+            .catch(error => console.error('Error fetching JSON data:', error));
+    }
+
+    // fetchData() al cargar la página
+    fetchData();
+
+    // Actualizar cada 10 segundos
+    /* setInterval(fetchData, 10000);*/
+
+    // Función para mostrar los detalles del bloque
+    function displayBlockDetails(block) {
+        document.getElementById('blockIndex').innerText = block.index;
+        document.getElementById('blockdifficulty').innerText = block.difficulty;
+        document.getElementById('blockTimestamp').innerText = new Date(block.timestamp * 1000).toLocaleString();
+        document.getElementById('blocknonce').innerText = block.nonce;
+        document.getElementById('blockprevious_block_hash').innerText = block.previous_block_hash;
+        document.getElementById('blockHash').innerText = block.block_hash;
+        document.getElementById('blockSize').innerText = block.block_size;
+        document.getElementById('blockNumTransactions').innerText = block.num_transactions;
+
+        // Crear la lista de transacciones
+        const transactionsList = document.getElementById('blockTransactions');
+        transactionsList.innerHTML = '';
+        block.transactions.forEach(transaction => {
+            const transactionItem = document.createElement('li');
+            transactionItem.innerHTML = `
+                    <strong>Transaction ID:</strong> ${transaction.transaction_id}<br>
+                    <strong>Inputs:</strong> ${transaction.inputs.map(input => `
+                        <p>
+                            <strong>Block Hash:</strong> ${input.block_hash}<br>
+                            <strong>Transaction ID:</strong> ${input.transaction_id}<br>
+                            <strong>Transaction Output Hash:</strong> ${input.transaction_output_hash}
+                        </p>`).join('')}<br>
+                    <strong>Outputs:</strong> ${transaction.outputs.map(output => `
+                        <p>
+                            <strong>Amount:</strong> ${output.amount}<br>
+                            <strong>Public Address:</strong> ${output.public_address}<br>
+                            <strong>Output Hash:</strong> ${output.output_hash}<br>
+                            <strong>Status:</strong> ${output.status}
+                        </p>`).join('')}
+                `;
+            transactionsList.appendChild(transactionItem);
+        });
+
+        document.getElementById('blockDetails').style.display = 'block';
+    }
+
+    // Función para cerrar los detalles del bloque
+    function closeBlockDetails() {
+        document.getElementById('blockDetails').style.display = 'none';
+    }
+</script>
+</body>
+
+</html>
