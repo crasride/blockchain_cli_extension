@@ -159,8 +159,9 @@ int print_input_info(llist_node_t node, unsigned int idx, void *args)
 {
 	void **ptr = args;
 	tx_in_t *input;
+	transaction_t *tx = (transaction_t *)ptr[1];
 	FILE *file = (FILE *)ptr[3];
-	(void)idx;
+
 
 
 
@@ -172,7 +173,11 @@ int print_input_info(llist_node_t node, unsigned int idx, void *args)
 	printf("    - Transaction ID: %s\n", bytes_to_hex(input->tx_id, SHA256_DIGEST_LENGTH));
 	fprintf(file, "              \"transaction_output_hash\": \"%s\"\n", bytes_to_hex(input->tx_out_hash, SHA256_DIGEST_LENGTH));
 	printf("    - Transaction Output Hash: %s\n\n" C_RESET, bytes_to_hex(input->tx_out_hash, SHA256_DIGEST_LENGTH));
-	fprintf(file, "            }\n");
+
+	if (idx < ((unsigned int)llist_size(tx->inputs) - 1))
+		fprintf(file, "            },\n");
+	else
+		fprintf(file, "            }\n");
 	return (0);
 }
 
