@@ -162,6 +162,9 @@ int print_input_info(llist_node_t node, unsigned int idx, void *args)
 	transaction_t *tx = (transaction_t *)ptr[1];
 	FILE *file = (FILE *)ptr[3];
 
+
+
+
 	input = (tx_in_t *)llist_get_node_data(node);
 	fprintf(file, "            {\n");
 	fprintf(file, "              \"block_hash\": \"%s\",\n", bytes_to_hex(input->block_hash, SHA256_DIGEST_LENGTH));

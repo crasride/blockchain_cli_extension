@@ -93,7 +93,7 @@
             height: 75px;
             transform-style: preserve-3d;
             cursor: pointer;
-            animation: spin 15s infinite linear;
+            animation: spin 10s infinite linear;
             margin-right: 70px; /* Espacio entre bloques */
             margin-bottom: 30px; /* Espacio adicional entre las filas */
         }
@@ -311,7 +311,7 @@
         border-radius: 50%;
         position: relative;
         transform-style: preserve-3d;
-        animation: spin 15s linear infinite;
+        animation: spin 10s linear infinite;
     }
 
     .coin:before {
@@ -368,19 +368,19 @@
         /* Pausa la animación al pasar el mouse */
     }
 
-        
-        .UTXO-zone:hover {
-            animation-play-state: paused;
-            /* Pausa la animación al pasar el mouse */
-        }
+    
+    .UTXO-zone:hover {
+        animation-play-state: paused;
+        /* Pausa la animación al pasar el mouse */
+    }
 
-        .UTXO-zone::-webkit-scrollbar {
-            width: 0px; /* Ancho de la barra de desplazamiento */
-        }
+    .UTXO-zone::-webkit-scrollbar {
+        width: 0px; /* Ancho de la barra de desplazamiento */
+    }
 
-        .UTXO-zone::-webkit-scrollbar-track {
-            background: transparent; /* Fondo transparente */
-        }
+    .UTXO-zone::-webkit-scrollbar-track {
+        background: transparent; /* Fondo transparente */
+    }
     </style>
 </head>
 
@@ -452,7 +452,7 @@
                                 walletValue = data['wallet_loaded'];
 
                                 const walletload = document.createElement('span');
-                                walletload.textContent = `Wallet Active: ${data['wallet_loaded']}`;
+                                walletload.textContent = `Conected Wallet: ${data['wallet_loaded']}`;
                                 walletload.classList.add('wallet-style');
                                 utxoZone.appendChild(walletload);
 
@@ -464,6 +464,7 @@
                     fetchBlockchainData();
                     /* setInterval(fetchBlockchainData, 10000); */
                 </script>
+                
             </div>
         </div>
     </div>
@@ -505,9 +506,15 @@
                                 const utxoBlock = document.createElement('div');
                                 utxoBlock.classList.add('coin');
 
+                                utxoBlock.dataset.coinId = entry.transaction_id;
+
+                                // Determinar el color de fondo de la moneda
+                                const backgroundColor = entry.output.public_address === walletValue ? '#FFDE00' : '#fdfdfb';
+                                const textColor = entry.output.public_address === walletValue ? 'black' : 'black';
+
                                 // Contenido del bloque
                                 utxoBlock.innerHTML = `
-                                    <div class="tails">${entry.output.amount}</div>
+                                    <div class="tails" style="background-color: ${backgroundColor}; color: ${textColor};">${entry.output.amount}</div>
                                     <div class="heads"></div>
 
                                 `;
@@ -525,7 +532,7 @@
                 }
                 
                 
-                // Función para mostrar los detalles del bloque UTXO
+               // Función para mostrar los detalles del bloque UTXO
                 function displayUTXODetails(entry) {
                     // Mostrar los detalles del bloque UTXO en el contenedor de detalles del bloque UTXO
                     document.getElementById('utxoBlockHash').innerText = entry.block_hash;
@@ -534,11 +541,12 @@
                     document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
                     document.getElementById('utxoOutputHash').innerText = entry.output.output_hash;
 
-                   // Comparar el valor de public_address con el valor del wallet
+                    // Comparar el valor de public_address con el valor del wallet
                     if (entry.output.public_address === walletValue) {
                         // Si son iguales, agregar un campo con valor "active"
                         document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
                         document.getElementById('utxoWalletActive').innerText = 'Active';
+                        
                     } else {
                         // Si son diferentes, agregar un campo con valor "No"
                         document.getElementById('utxoPublicAddress').innerText = entry.output.public_address;
@@ -548,6 +556,7 @@
                     // Mostrar el contenedor de detalles del bloque UTXO
                     document.getElementById('utxoBlockDetails').style.display = 'block';
                 }
+
 
                 // Función para cerrar los detalles del bloque UTXO
                 function closeUTXODetails() {
@@ -565,7 +574,7 @@
         <p><strong>Amount:</strong> <span id="utxoAmount"></span></p>
         <p><strong>Public Address:</strong> <span id="utxoPublicAddress"></span></p>
         <p><strong>Output Hash:</strong> <span id="utxoOutputHash"></span></p>
-        <p><strong>Wallet Active:</strong> <span id="utxoWalletActive"></span></p>
+        <p><strong>Owned OUTX:</strong> <span id="utxoWalletActive"></span></p>
         <button onclick="closeUTXODetails()">Close</button>
     </div>
 
