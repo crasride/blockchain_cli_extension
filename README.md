@@ -1,16 +1,12 @@
+<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/media/Terminal.png"> Blockchain 👇 Terminal</a></h2>
 
-
-<h1 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/media/Terminal.png"> Blockchain 👇 Terminal</a></h1>
-
-<br>
 
 <p align="center">
 <img width="" height="" src="./media/Terminal.png">
 </p>
 
-<br>
 
-<h1 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/app/img/vi1.png"> 👇Blockchain Graphic Representation👇</a></h1>
+<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/app/img/vi1.png"> 👇Blockchain Graphic Representation👇</a></h2>
 
 <br>
 
@@ -18,9 +14,8 @@
 <img width="" height="" src="./app/img/vi1.png">
 </p>
 
-<br>
 
-<h1 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h1>
+<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h2>
 
 
 ### How to interact with the Blockchain library you previously created
