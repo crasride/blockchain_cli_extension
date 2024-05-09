@@ -15,16 +15,8 @@
 </p>
 
 
-<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h2>
+<h1 align="center"> What is the Blockchain CLI Extension?</h1>
 
-
-### What is the Blockchain CLI Extension?
-
-<details>
-<summary>How to maintain a transaction pool</summary>
-<br>
-
-</details>
 
 
 ### Requirements
