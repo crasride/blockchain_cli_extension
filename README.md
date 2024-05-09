@@ -1,16 +1,21 @@
-<h1 align="center">Blockchain</h1>
 
+<h1 align="center">Blockchain 👇 Terminal</h1>
+<br>
 <p align="center">
-<img width="400" height="500" src="./media/Terminal.png">
-<img width="400" height="500" src="./app/img/vi1.png">
+<img width="" height="" src="./media/Terminal.png">
 </p>
 
+<br>
 
+### <h1 align="center">👇Blockchain Graphic Representation👇</h1>
+<br>
+<p align="center">
+<img width="" height="" src="./app/img/vi1.png">
+</p>
 
+<br>
 
 <h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h2>
-
-
 
 
 ### How to interact with the Blockchain library you previously created
@@ -72,6 +77,7 @@ Run the following command from the root of the repository:
 | wallet_save    | `wallet_save <path>`        | Save wallet to a file.                          |
 | wallet_load    | `wallet_load <path>`        | Load wallet from a file.                        |
 | mine           | `mine`                      | Mine new blocks.                                |
+|                | `mine <amount>`             | Amount to mine mining                           |
 | send           | `send <amount> <address>  ` | Send coins to a specific address.               |
 | info           | `info`                      | Display information about the blockchain.       |
 | info_block     | `info_block `               | Display information about the block.            |
