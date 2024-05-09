@@ -2,7 +2,7 @@
 
 <p align="center">
 <img width="400" height="500" src="./media/Terminal.png">
-<img width="730" height="500" src="./app/img/vi1730_500.png">
+<img width="400" height="500" src="./app/img/vi1730_500.png">
 </p>
 
 
