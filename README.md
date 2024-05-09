@@ -70,24 +70,26 @@ Run the following command from the root of the repository:
 
 ### Available commands in the CLI:
 
-| Command        | Usage                       | Description                                     |
-| ---------------| --------------------------- | ----------------------------------------------- |
-| help           | `help`                      | Display information about available commands.   |
-| wallet_create  | `wallet_create`             | Create a new wallet.                            |
-| wallet_save    | `wallet_save <path>`        | Save wallet to a file.                          |
-| wallet_load    | `wallet_load <path>`        | Load wallet from a file.                        |
-| mine           | `mine`                      | Mine new blocks.                                |
-|                | `mine <amount>`             | Amount to mine mining                           |
-| send           | `send <amount> <address>  ` | Send coins to a specific address.               |
-| info           | `info`                      | Display information about the blockchain.       |
-| info_block     | `info_block `               | Display information about the block.            |
-| list_utxo      | `list_utxo`                 | List unspent transactions.                      |
-| save           | `save <path>/<file>`        | Save blockchain data to a file.                 |
-| load           | `load <path>  `             | Load blockchain data from a file.               |
-| ls             | `ls`                        | List files in the current directory.            |
-| clear          | `clear`                     | Clear the screen.                               |
-| ↑ ↓ ← →        | `direction arrows`          | Direction arrows.                               |
-| exit           | `exit`                      | Exit.                                           |
+| Command        | Usage                             | Description                                     |
+| ---------------| --------------------------------- | ----------------------------------------------- |
+| help           | `help`                            | Display information about available commands.   |
+| wallet_create  | `wallet_create`                   | Create a new wallet.                            |
+| wallet_save    | `wallet_save <path>`              | Save wallet to a file.                          |
+| wallet_load    | `wallet_load <path>`              | Load wallet from a file.                        |
+| mine           | `mine`                            | Mine new blocks.                                |
+|                | `mine <amount>`                   | Amount to mine mining                           |
+| send           | `send <amount> <address>`         | Send coins to a specific address.               |
+| custom_send    | `custom_send <amount> <address>`  | Custom send coins to a specific address and     |
+|                |                                   |                                                 |
+| info           | `info`                            | Display information about the blockchain.       |
+| info_block     | `info_block `                     | Display information about the block.            |
+| list_utxo      | `list_utxo`                       | List unspent transactions.                      |
+| save           | `save <path>/<file>`              | Save blockchain data to a file.                 |
+| load           | `load <path>  `                   | Load blockchain data from a file.               |
+| ls             | `ls`                              | List files in the current directory.            |
+| clear          | `clear`                           | Clear the screen.                               |
+| ↑ ↓ ← →        | `direction arrows`                | Direction arrows.                               |
+| exit           | `exit`                            | Exit.                                           |
 
 
 
