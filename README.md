@@ -1,4 +1,4 @@
-<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/media/Terminal.png"> Blockchain 👇 Terminal</a></h2>
+<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> Blockchain 👇 Terminal</a></h2>
 
 
 <p align="center">
@@ -6,7 +6,7 @@
 </p>
 
 
-<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/blob/jose/app/img/vi1.png"> 👇Blockchain Graphic Representation👇</a></h2>
+<h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/jose/app"> 👇Blockchain Graphic Representation👇</a></h2>
 
 <br>
 
