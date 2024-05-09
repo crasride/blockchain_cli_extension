@@ -18,7 +18,14 @@
 <h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h2>
 
 
-### How to interact with the Blockchain library you previously created
+### What is the Blockchain CLI Extension?
+
+<details>
+<summary>How to maintain a transaction pool</summary>
+<br>
+
+</details>
+
 
 ### Requirements
 
@@ -118,16 +125,6 @@ command or at the end of the use type `info` and option `4`
 | exit           | `exit`                            | Exit.                                           |
 
 
-
-
-### What is the Blockchain CLI Extension?
-
-
-<details>
-<summary>How to maintain a transaction pool</summary>
-<br>
-
-</details>
 
 
 <div align="center">
