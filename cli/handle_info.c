@@ -36,9 +36,10 @@ int handle_info(state_t *state)
 	blockchain_t *blockchain = state->blockchain;
 	llist_t *unspent = blockchain->unspent;
 	llist_t *tx_pool = state->tx_pool;
-	uint32_t coins = 0;
+	uint32_t coins = 0, own_coins = 0;
 	FILE *file	= NULL;
 	uint8_t pub[EC_PUB_LEN] = {0};
+	void *args[2];
 
 	if (state->wallet)
 		ec_to_pub(state->wallet, pub);
@@ -55,6 +56,9 @@ int handle_info(state_t *state)
 	}
 
 	llist_for_each(state->blockchain->unspent, sum_unspent, &coins);
+	args[0] = (void *)&own_coins;
+	args[1] = (void *)state;
+	llist_for_each(state->blockchain->unspent, sum_unspent_wallet, args);
 
 	file = fopen("data_blockchain.json", "w");
 	if (file)
@@ -78,6 +82,7 @@ int handle_info(state_t *state)
 		}
 
 		fprintf(file, "  \"Total Supply HolbertonCoins\": \"%u\",\n", coins);
+		fprintf(file, "  \"Total coin on wallet\": \"%u\",\n", own_coins);
 		fprintf(file, "  \"wallet_loaded\": \"%s\"\n", bytes_to_hex(pub, EC_PUB_LEN));
 		fprintf(file, "}\n");
 
@@ -109,6 +114,7 @@ int handle_info(state_t *state)
 		printf("Error: Transaction pool is " C_RED "NULL\n" C_RESET "\n");
 	}
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
+	printf("Total coin on wallet: " C_GREEN "%u" C_RESET "\n", own_coins);
 	printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
 	printf(C_GREEN "\n======================================================\n\n" C_RESET);
 

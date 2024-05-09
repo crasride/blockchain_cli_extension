@@ -180,4 +180,5 @@ typedef struct block_header_s
 } block_header_t;
 
 /* __attribute__((warn_unused_result)); */
+block_t *create_genesis_block(void);
 #endif /* _BLOCKCHAIN_H_ */
