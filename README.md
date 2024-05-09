@@ -1,12 +1,16 @@
 <h1 align="center">Blockchain</h1>
 
 <p align="center">
-<img width="" height="" src="./media/Terminal.png">
+<img width="400" height="500" src="./media/Terminal.png">
+<img width="730" height="500" src="./app/img/vi1730_500.png">
 </p>
 
 
 
+
 <h2 align="center"><a href="https://github.com/crasride/blockchain_cli_extension/tree/master/cli"> 👉 Blockchain - CLI - extension</a></h2>
+
+
 
 
 ### How to interact with the Blockchain library you previously created
