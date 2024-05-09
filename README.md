@@ -39,7 +39,7 @@ Facilitates the ``sending of transactions`` between different addresses of the b
 Allows the ``creation and inclusion`` of new blocks in the blockchain, along with the 
 ``validation`` and ``resolution`` of associated ``proofs of work``.
 
-### 5. Information Display:
+### 5. Information Display and Graphical Representation Website:
 Provides commands to display relevant information about the current state of the blockchain,
  such as the ``number of blocks``, ``pending transactions``, and ``unspent outputs``. In addition, it is 
  responsible for ``collecting this data`` in a JSON file for subsequent analysis or processing on
@@ -134,11 +134,10 @@ command or at the end of the use type `info` and option `4`
 | wallet_create  | `wallet_create`                   | Create a new wallet.                            |
 | wallet_save    | `wallet_save <path>`              | Save wallet to a file.                          |
 | wallet_load    | `wallet_load <path>`              | Load wallet from a file.                        |
-| mine           | `mine`                            | Mine new blocks.                                |
-|                | `mine <amount>`                   | Amount to mine mining                           |
+| mine           | `mine`                            | Mine a new block.                               |
+|                | `mine <block quantity>`           | Mine a specified quantity of blocks             |
 | send           | `send <amount> <address>`         | Send coins to a specific address.               |
-| custom_send    | `custom_send <amount> <address>`  | Custom send coins to a specific address and     |
-|                |                                   |                                                 |
+| custom_send    | `custom_send <amount> <address>`  | It will be asked to specify each utxo to select for this transaction and each utxo to be created|for receiver and sender (change)                          |
 | info           | `info`                            | Display information about the blockchain.       |
 | info_block     | `info_block `                     | Display information about the block.            |
 | list_utxo      | `list_utxo`                       | List unspent transactions.                      |
