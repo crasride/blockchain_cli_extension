@@ -94,10 +94,6 @@ To generate the `JSON` files that contain the terminal usage data, then use a
 command or at the end of the use type `info` and option `4`
 
 
-
-
-
-
 ### Available commands in the CLI:
 
 | Command        | Usage                             | Description                                     |
