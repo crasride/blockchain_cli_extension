@@ -15,6 +15,7 @@ int handle_info_selection(state_t *state)
 	printf("1. Blockchain Info\n");
 	printf("2. Blocks Info\n");
 	printf("3. UTXOs Info\n");
+	printf("4. Generate JSON Data\n");
 	printf("Enter option number: ");
 
 	if (fgets(input, sizeof(input), stdin) != NULL)
@@ -29,6 +30,13 @@ int handle_info_selection(state_t *state)
 				return handle_info_block(state);
 			case 3:
 				return generate_unspent_list(state->blockchain);
+			case 4:
+				freopen("/dev/null", "w", stdout);
+				handle_info(state);
+				handle_info_block(state);
+				generate_unspent_list(state->blockchain);
+				freopen("/dev/tty", "w", stdout);
+				return 0;
 			default:
 				printf("Invalid option\n");
 				return -1;
