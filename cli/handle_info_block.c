@@ -222,9 +222,9 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 		printf("    - Status: "C_GREEN"Unspent\n\n" C_RESET);
 
 	if (idx < num_out - 1)
-		fprintf(file, "        },\n");
+		fprintf(file, "            },\n");
 	else
-		fprintf(file, "        }\n");
+		fprintf(file, "            }\n");
 	} else {
 		fprintf(file, "            {\n");
 		fprintf(file, "              \"amount\": %u,\n", output->amount);
@@ -235,6 +235,9 @@ int print_output_info(llist_node_t node, unsigned int idx, void *args)
 		printf("    - Output Hash: %s\n", bytes_to_hex(output->hash, SHA256_DIGEST_LENGTH));
 		fprintf(file, "              \"status\": \"Spent\"\n");
 		printf("    - Status: "C_RED"Spent\n\n" C_RESET);
+	if (idx < num_out - 1)
+		fprintf(file, "            },\n");
+	else
 		fprintf(file, "            }\n");
 
 	}
