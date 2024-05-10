@@ -150,27 +150,10 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (handle_send_custom(amount, receiver_address, state));
 		}
 	}
-	else if (strcmp(cmd, "info_blockchain") == 0)
-		return (handle_info(state));
-	else if (strcmp(cmd, "info_block") == 0)
-		return handle_info_block(state);
 	else if (strcmp(cmd, "help") == 0)
 	{
 		print_help();
 		return 0;
-	}
-	else if (strcmp(cmd, "info_utxo") == 0)
-	{
-		if (arg1)
-		{
-			printf("Usage: list\n");
-			printf("Too many arguments\n");
-			return (-1);
-		}
-		else
-		{
-			return generate_unspent_list(state->blockchain);
-		}
 	}
 	else if (strcmp(cmd, "clear") == 0)
 	{
@@ -180,6 +163,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 	else if (strcmp(cmd, "ls") == 0)
 	{
 		system("ls");
+		return 0;
+	}
+	else if (strcmp(cmd, "sleep") == 0)
+	{
+		system("sleep 1");
 		return 0;
 	}
 	else if (strcmp(cmd, "load") == 0)
@@ -221,6 +209,15 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			else if (strcmp(arg1, "utxo") == 0)
 			{
 				return generate_unspent_list(state->blockchain);
+			}
+			else if (strcmp(arg1, "json") == 0)
+			{
+				freopen("/dev/null", "w", stdout);
+				handle_info(state);
+				handle_info_block(state);
+				generate_unspent_list(state->blockchain);
+				freopen("/dev/tty", "w", stdout);
+				return (0);
 			}
 			else
 			{
