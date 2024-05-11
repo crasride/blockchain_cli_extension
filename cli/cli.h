@@ -80,6 +80,7 @@ typedef struct command_info_s
 int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 					char *receiver_address);
 void print_logo(void);
+int update_json(state_t *state);
 
 /* handle_exit.c */
 int handle_exit(void);

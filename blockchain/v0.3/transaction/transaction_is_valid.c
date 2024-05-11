@@ -41,11 +41,12 @@ int transaction_is_valid(transaction_t const *transaction,
 	tx_in_t *in_node = NULL;/* to iterate through tx inputs */
 	unspent_tx_out_t *out_node = NULL;/* to iterate through all_unspent */
 	EC_KEY *unspent_key = NULL;/* to verify each input's sig */
-	int i, j, unspent_len = llist_size(all_unspent);
+	int i, j, unspent_len = 0;
 	uint32_t amount_in = 0, amount_out = 0;/* to compare total amounts */
 
 	if (!transaction || !all_unspent)
 		return (0);
+	unspent_len = llist_size(all_unspent);
 	transaction_hash(transaction, hash_buff);/* Compute the hash of the tx */
 	if (memcmp(transaction->id, hash_buff, SHA256_DIGEST_LENGTH))
 		return (0); /* hash && computed hash conflict */
