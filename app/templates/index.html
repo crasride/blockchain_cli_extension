@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <link rel="stylesheet" href="normalize.css">
     <title>Blockchain Block Diagram</title>
     <!-- Enlaces a bibliotecas de Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -21,6 +20,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly; /* Ajusta el espacio entre las zonas */
+            background-image: url('img/3_720.jpg');
             background-color: rgb(67, 68, 68);
         }
         .graph-zone, .block-zone, .blockchain-zone {
@@ -30,7 +30,7 @@
 
         /* Estilos para los gráficos */
         .graph-zone {
-            background-color: #080000;
+
             width: 35%; /* Ancho del área de gráficos */
             height: 30%;
             top: 20px;
@@ -79,7 +79,6 @@
             margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
         }
 
-
         /* Estilos para los bloques */
         
         .block-container {
@@ -102,7 +101,7 @@
         }
 
         .block-zone {
-            background-color: yellow;
+
             width: 30%;
             height: -5%;
             padding: 25px;
@@ -173,7 +172,6 @@
             100% { transform: rotateY(360deg); }
         }
 
-
         /* Estilos para los detalles del bloque */
         .block-details {
             background-color: #fff;
@@ -234,11 +232,9 @@
             margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
         }
 
-
         /* Estilos para la zona de blockchain */
-
         .container1 {
-            background-color: rgb(68, 6, 38);
+
             display: flex;
             flex-wrap: wrap;
             height: 30%;
@@ -247,14 +243,12 @@
             border-radius: 10px;
         }
 
-
         .blockchain-zone {
-            background-color: #18b300;
             width: 30%;
             height: 100;
             max-height: calc(100vh - 40px);
             margin-bottom: 20px; 
-            padding: 20px;
+            padding: 5px;
             box-sizing: border-box;
             border-radius: 10px; /* Agregar bordes redondeados */
             color: #fff; /* Cambiar el color del texto a blanco */ 
@@ -278,6 +272,7 @@
             color: rgb(240, 240, 240);
             font-size: 14px;
             margin-left: 10px;
+            word-wrap: break-word;
         }
 
         /* Estilos para la zona de UTXO */
@@ -288,12 +283,12 @@
         }
 
         .UTXO-zone {
-            background-color: red;
+
             height: 70%;
             width: 100%;/* Ajusta el ancho */
             float: right; /* Alinea a la derecha */
             margin-top: 3%; /* Ajusta el margen superior para subirlo */
-            padding: 20px;
+            padding: 20px; /* Añade relleno */
             box-sizing: border-box;
             border-radius: 10px; /* Agregar bordes redondeados */
             color: #fff; /* Cambiar el color del texto a blanco */
@@ -420,6 +415,13 @@
     }
     
 
+    @media only screen and (max-width: 768px) {
+        .plot-title {
+            font-size: 10px; 
+        }
+    }
+    
+
     </style>
 </head>
 
@@ -448,6 +450,7 @@
             <div class="chartArea" id="chartArea3"></div>
             <div class="chartArea" id="chartArea2"></div>
             <div class="chartArea" id="chartArea4"></div>
+            <div class="chartArea" id="chartArea6"></div>
         </div>
 
         <!-- Zona de Blockchain -->
@@ -456,7 +459,6 @@
                 <div class="titulo"><h2>Blockchain Zone</h2></div>
                 <div id="blockchainData">
                     <p id="walletloadValue" class="wallet-style"></span></p>
-
                     <script>
                         // Variable para almacenar el valor del wallet
                         let walletValue;
@@ -494,15 +496,19 @@
 
                                     // Mostrar el valor del wallet
                                     walletValue = data['wallet_loaded'];
+                                    const connectedWallet = data['name'] ? `Connected Wallet: ${data['name']} ` : 'Connected Wallet: ';
+                                    const secondLine = walletValue ? walletValue.substring(0, 32) : '';
+                                    const thirdLine = walletValue ? walletValue.substring(32, 66) : '';
+                                    const fourthLine = walletValue ? walletValue.substring(66, 99) : '';
+                                    const fifthLine = walletValue ? walletValue.substring(99, 130) : '';
 
                                     const walletload = document.createElement('span');
-                                    const walletValueTrimmed = data['wallet_loaded'].substring(data['wallet_loaded'].length - 15);
-                                    walletload.textContent = `Conected Wallet: ${walletValueTrimmed}`;
+                                    walletload.textContent = `${connectedWallet}\n${secondLine}\n${thirdLine}\n${fourthLine}\n${fifthLine}`;
                                     walletload.classList.add('wallet-style');
                                     walletload.style.color = 'yellow';
                                     utxoZone.appendChild(walletload);
 
-                                    // Mostrar el valor del wallet por console
+                                    // Mostrar el valor del wallet por consola
                                     console.log('Valor del wallet recuperado:', walletValue);
                                 })
                                 .catch(error => console.error('Error fetching blockchain data:', error));
@@ -635,7 +641,6 @@
     </div>
 
     <!-- Detalles del bloque -->
-    <!-- <div class="block-details" id="blockDetails" style="max-height: 80%; overflow-y: auto;"> -->
     <div class="block-details" id="blockDetails" style="max-height: 80%; overflow-y: auto; display: none;">
         <h2>Block Details</h2>
         <p><strong>Index:</strong> <span id="blockIndex"></span></p>
@@ -696,7 +701,7 @@
 
                 const layout23 = {
                     title: 'Number of Spent and Unspent Transactions in Each Block',
-                    xaxis: {
+                    xaxis: { 
                         title: 'Block Index'
                     },
                     yaxis: {
@@ -723,6 +728,7 @@
                     xaxis: {
                         title: 'Block Index'
                     },
+                    
                     yaxis: {
                         title: 'Total Amount'
                     },
@@ -752,6 +758,30 @@
                     paper_bgcolor: 'transparent'
                 };
                 Plotly.newPlot('chartArea3', [chartData5], layout5);
+
+                // Sexto gráfico con los datos de la dificultad del bloque
+                const difficulty = data.map(block => block.difficulty);
+                const chartData6 = {
+                    x: data.map(block => block.index),
+                    y: difficulty,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    marker: {
+                        color: 'rgb(255, 0, 0)' // Color rojo
+                    }
+                };
+                const layout6 = {
+                    title: 'Block Difficulty Over Time',
+                    xaxis: {
+                        title: 'Block Index'
+                    },
+                    yaxis: {
+                        title: 'Difficulty'
+                    },
+                    paper_bgcolor: 'transparent'
+                };
+                Plotly.newPlot('chartArea6', [chartData6], layout6);
+
 
                 // Crear los bloques
                 const blockchainDiv = document.getElementById('blockchain');
@@ -826,6 +856,19 @@
         document.getElementById('blockDetails').style.display = 'none';
     }
 </script>
+<!-- Recargar la página al cambiar el tamaño-->
+<script>
+    window.addEventListener('resize', function() {
+        location.reload();
+    });
+
+    document.addEventListener('fullscreenchange', function() {
+        if (document.fullscreenElement) {
+            location.reload();
+        }
+    });
+</script>
+
 </body>
 
 </html>
