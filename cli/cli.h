@@ -160,4 +160,6 @@ int handle_info_selection(state_t *state);
 bool is_number(char *string);
 int handle_mine_auto(state_t *state, int nb_block, int interval);
 int sum_unspent_wallet(void *node, unsigned int idx, void *args);
+
+int check_wallet(uint8_t *pub);
 # endif /* _CLI_H_ */
