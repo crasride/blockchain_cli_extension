@@ -28,7 +28,7 @@ uint32_t blockchain_difficulty(blockchain_t const *blockchain)
 		return (last_block->info.difficulty);
 	/* Get the block at the difficulty adjustment interval */
 	adjusted_block = llist_get_node_at(blockchain->chain,
-		llist_size(blockchain->chain) - DIFFICULTY_ADJUSTMENT_INTERVAL);
+		(llist_size(blockchain->chain) - DIFFICULTY_ADJUSTMENT_INTERVAL - 1));
 	if (!adjusted_block)
 		return (0);
 	/* Compute the expected and actual time between the last two blocks */
@@ -47,6 +47,5 @@ uint32_t blockchain_difficulty(blockchain_t const *blockchain)
 	/* If the difficulty stays the same */
 	else
 		new_difficulty = last_block->info.difficulty;
-
 	return (new_difficulty);
 }
