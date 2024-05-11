@@ -77,7 +77,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (-1);
 		}
 		else
-			return (handle_wallet_create(state));
+		{
+			handle_wallet_create(state);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "wallet_save") == 0)
 	{
