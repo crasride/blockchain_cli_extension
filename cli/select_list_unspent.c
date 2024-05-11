@@ -209,7 +209,8 @@ llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 		token = atoi(tokens_receiver[i]);
 		printf("%u ", token);
 		tx_out = tx_out_create(token, pub_receiver);
-		llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
+		if (tx_out)
+			llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
 	}
 
 	readline("");
@@ -235,8 +236,10 @@ llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 		token = atoi(tokens_sender[i]);
 		printf("%u ", token);
 		tx_out = tx_out_create(token, pub_sender);
-		llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
+		if (tx_out)
+			llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
 	}
+	printf("\n");
 
 	readline("");
 	system("clear");
