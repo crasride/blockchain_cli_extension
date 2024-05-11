@@ -37,6 +37,7 @@
 *
 * @status: most recent executed command status
 * @wallet: ec_keys
+* @name: folder name corresponding to wallet
 * @blockchain: blockchain
 * @tx_pool: transaction pool
 * @coins: coins
@@ -45,6 +46,7 @@ typedef struct state_s
 {
 	int status;
 	EC_KEY *wallet;
+	char *name;
 	blockchain_t *blockchain;
 	llist_t *tx_pool;
 	uint32_t coins;
