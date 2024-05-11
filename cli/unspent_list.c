@@ -10,32 +10,20 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 {
 	int sort_result = 0;
 	FILE *file = NULL;
-	size_t list_size = llist_size(blockchain->unspent);
+	size_t list_size = 0;
 	void *arg_json[2];
 
-
-	arg_json[1] = (void *)list_size;
-
-	if(list_size == 0)
+	if (!blockchain)
 	{
-		printf("Error: No unspent transactions available\n");
+		printf("Error: Blockchain is invalid\n");
 		return (-1);
 	}
-
-	if (!blockchain || !blockchain->unspent)
+	if (!blockchain->unspent)
 	{
-		printf("Error: Blockchain or unspent transactions list is invalid\n");
-		return (-1);
-	}
-
-	if (llist_size(blockchain->unspent) == 0)
-	{
-		printf("Error: No unspent transactions available\n");
+		printf("Error sorted: unspent transactions list is invalid\n");
 		return (-1);
 	}
 	file = fopen("data_utxo.json", "w");
-
-
 	if (!file)
 	{
 		printf("Error: Failed to open file for writing UTXO data\n");
@@ -43,6 +31,8 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 	}
 
 	arg_json[0] = (void *)file;
+	list_size = llist_size(blockchain->unspent);
+	arg_json[1] = (void *)&list_size;
 
 	sort_result = llist_sort(blockchain->unspent,
 								(node_cmp_t)compares_unspent_tx_out, NULL, 0);
@@ -59,6 +49,11 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 	fprintf(file, "[\n");
 	llist_for_each(blockchain->unspent, (node_func_t)print_unspent_tx_out_info, arg_json);
 	fprintf(file, "]\n");
+	if(list_size == 0)
+	{
+		printf("No unspent transactions available\n");
+		return (-1);
+	}
 
 	fclose(file);
 
@@ -73,32 +68,20 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 int generate_unspent_list(blockchain_t *blockchain)
 {
 	FILE *file = NULL;
-	size_t list_size = llist_size(blockchain->unspent);
+	size_t list_size = 0;
 	void *arg_json[2];
 
-
-	arg_json[1] = (void *)list_size;
-
-	if(list_size == 0)
+	if (!blockchain)
 	{
-		printf("Error: No unspent transactions available\n");
+		printf("Error: Blockchain is invalid\n");
 		return (-1);
 	}
-
-	if (!blockchain || !blockchain->unspent)
+	if (!blockchain->unspent)
 	{
-		printf("Error: Blockchain or unspent transactions list is invalid\n");
-		return (-1);
-	}
-
-	if (llist_size(blockchain->unspent) == 0)
-	{
-		printf("Error: No unspent transactions available\n");
+		printf("Error unsorted: unspent transactions list is invalid\n");
 		return (-1);
 	}
 	file = fopen("data_utxo.json", "w");
-
-
 	if (!file)
 	{
 		printf("Error: Failed to open file for writing UTXO data\n");
@@ -106,6 +89,8 @@ int generate_unspent_list(blockchain_t *blockchain)
 	}
 
 	arg_json[0] = (void *)file;
+	list_size = llist_size(blockchain->unspent);
+	arg_json[1] = (void *)&list_size;
 
 	printf(C_GREEN"\n========================================================\n");
 	printf("    ================= List Utxo ==================    ");
@@ -113,6 +98,11 @@ int generate_unspent_list(blockchain_t *blockchain)
 	fprintf(file, "[\n");
 	llist_for_each(blockchain->unspent, (node_func_t)print_unspent_tx_out_info, arg_json);
 	fprintf(file, "]\n");
+	if(list_size == 0)
+	{
+		printf("No unspent transactions available\n");
+		return (-1);
+	}
 
 	fclose(file);
 
@@ -156,7 +146,7 @@ int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg)
 	void **ptr = arg;
 	unspent_tx_out_t *utxo = NULL;
 	FILE *file = (FILE *)ptr[0];
-	size_t size = (size_t)ptr[1];
+	size_t *size = (size_t *)ptr[1];
 
 	if (!node)
 	{
@@ -180,8 +170,7 @@ int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg)
 			SHA256_DIGEST_LENGTH));
 	fprintf(file, "  }\n");
 
-	if (idx == size - 1)
-
+	if (idx == *size - 1)
 	{
 		fprintf(file, "}\n");
 	}

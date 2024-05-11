@@ -37,6 +37,7 @@
 *
 * @status: most recent executed command status
 * @wallet: ec_keys
+* @name: folder name corresponding to wallet
 * @blockchain: blockchain
 * @tx_pool: transaction pool
 * @coins: coins
@@ -45,6 +46,7 @@ typedef struct state_s
 {
 	int status;
 	EC_KEY *wallet;
+	char *name;
 	blockchain_t *blockchain;
 	llist_t *tx_pool;
 	uint32_t coins;
@@ -78,6 +80,7 @@ typedef struct command_info_s
 int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 					char *receiver_address);
 void print_logo(void);
+int update_json(state_t *state);
 
 /* handle_exit.c */
 int handle_exit(void);
@@ -158,4 +161,6 @@ int handle_info_selection(state_t *state);
 bool is_number(char *string);
 int handle_mine_auto(state_t *state, int nb_block, int interval);
 int sum_unspent_wallet(void *node, unsigned int idx, void *args);
+
+int check_wallet(uint8_t *pub);
 # endif /* _CLI_H_ */
