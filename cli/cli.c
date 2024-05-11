@@ -36,6 +36,7 @@ int handle_info_selection(state_t *state)
 				handle_info_block(state);
 				generate_unspent_list(state->blockchain);
 				freopen("/dev/tty", "w", stdout);
+				printf(C_GREEN "json files created\n" C_RESET);
 				return 0;
 			default:
 				printf("Invalid option\n");
@@ -217,6 +218,7 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 				handle_info_block(state);
 				generate_unspent_list(state->blockchain);
 				freopen("/dev/tty", "w", stdout);
+				printf(C_GREEN "json files created\n" C_RESET);
 				return (0);
 			}
 			else
@@ -299,6 +301,7 @@ int main(void)
 	state->tx_pool = tx_pool;
 	state->status = 0;
 	state->wallet = NULL;
+	state->name = NULL;
 
 	while (1)
 	{

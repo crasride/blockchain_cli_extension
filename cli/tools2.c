@@ -92,3 +92,21 @@ uint8_t *string_to_pub(char *address)
 
 	return (pub);
 }
+
+/**
+ * check_wallet - check if a wallet is empty
+ * @pub: public key
+ * Return: 0 if empty, 1 if not
+ */
+int check_wallet(uint8_t *pub)
+{
+	int i;
+
+	for (i = 0; i < EC_PUB_LEN; i++)
+		if (pub[i] != 0)
+			break;
+	if (i == EC_PUB_LEN)
+		return (0);
+	else
+		return (1);
+}

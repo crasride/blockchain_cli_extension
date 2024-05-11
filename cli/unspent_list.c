@@ -65,18 +65,18 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 int generate_unspent_list(blockchain_t *blockchain)
 {
 	FILE *file = NULL;
-	size_t list_size = llist_size(blockchain->unspent);
+	size_t list_size = 0;
 	void *arg_json[2];
-
 
 	arg_json[1] = (void *)list_size;
 
-	if (!blockchain || !blockchain->unspent)
+	if (!blockchain)
 	{
-		printf("Error: Blockchain or unspent transactions list is invalid\n");
+		printf("Error: Blockchain is invalid\n");
 		return (-1);
 	}
 
+	list_size = llist_size(blockchain->unspent);
 	file = fopen("data_utxo.json", "w");
 
 

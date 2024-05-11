@@ -116,8 +116,14 @@ int handle_info(state_t *state)
 	}
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
 	printf("Total coin on wallet: " C_GREEN "%u" C_RESET "\n", own_coins);
-	printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
-	printf("Name: %s\n", state->name);
+	if (check_wallet(pub))
+		printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
+	else
+		printf("Wallet loaded: " C_RED "No wallet\n" C_RESET);
+	if (!state->name)
+		printf("Name: " C_RED "No name\n" C_RESET);
+	else
+		printf("Name: %s\n", state->name);
 	printf(C_GREEN "\n======================================================\n\n" C_RESET);
 
 	return (0);
