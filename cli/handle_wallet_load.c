@@ -30,7 +30,7 @@ int handle_wallet_load(state_t *state, char *path)
 	if (state->wallet)
 		EC_KEY_free(state->wallet);
 	state->wallet = ec_load(path);
-	state->name = getLastFolderName(path);
+	state->name = strdup(getLastFolderName(path));
 	if (state->wallet)
 	{
 		printf("Loaded %s wallet\n", state->name);

@@ -46,7 +46,7 @@ typedef struct state_s
 {
 	int status;
 	EC_KEY *wallet;
-	const char *name;
+	char *name;
 	blockchain_t *blockchain;
 	llist_t *tx_pool;
 	uint32_t coins;

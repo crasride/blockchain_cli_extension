@@ -83,7 +83,8 @@ int handle_info(state_t *state)
 
 		fprintf(file, "  \"Total Supply HolbertonCoins\": \"%u\",\n", coins);
 		fprintf(file, "  \"Total coin on wallet\": \"%u\",\n", own_coins);
-		fprintf(file, "  \"wallet_loaded\": \"%s\"\n", bytes_to_hex(pub, EC_PUB_LEN));
+		fprintf(file, "  \"wallet_loaded\": \"%s\",\n", bytes_to_hex(pub, EC_PUB_LEN));
+		fprintf(file, "  \"name\": \"%s\"\n", state->name);
 		fprintf(file, "}\n");
 
 		fclose(file);
@@ -116,6 +117,7 @@ int handle_info(state_t *state)
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
 	printf("Total coin on wallet: " C_GREEN "%u" C_RESET "\n", own_coins);
 	printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
+	printf("Name: %s\n", state->name);
 	printf(C_GREEN "\n======================================================\n\n" C_RESET);
 
 	return (0);
