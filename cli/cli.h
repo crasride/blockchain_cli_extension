@@ -104,7 +104,7 @@ int handle_wallet_create(state_t *state);
 int handle_wallet_save(state_t *state, char *path);
 
 /* handle_wallet_load */
-
+char *getLastFolderName(char *path);
 int handle_wallet_load(state_t *state, char *path);
 
 /* handle_load */

@@ -15,6 +15,7 @@ int handle_wallet_save(state_t *state, char *path)
 	}
 	if (ec_save(state->wallet, path))
 	{
+		state->name = strdup(getLastFolderName(path));
 		printf("Save wallet (EC key pair)\n");
 		return (0);
 	}
