@@ -13,14 +13,7 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 	size_t list_size = llist_size(blockchain->unspent);
 	void *arg_json[2];
 
-
 	arg_json[1] = (void *)list_size;
-
-	if(list_size == 0)
-	{
-		printf("Error: No unspent transactions available\n");
-		return (-1);
-	}
 
 	if (!blockchain || !blockchain->unspent)
 	{
@@ -28,13 +21,7 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 		return (-1);
 	}
 
-	if (llist_size(blockchain->unspent) == 0)
-	{
-		printf("Error: No unspent transactions available\n");
-		return (-1);
-	}
 	file = fopen("data_utxo.json", "w");
-
 
 	if (!file)
 	{
@@ -59,13 +46,64 @@ int generate_sorted_unspent_list(blockchain_t *blockchain)
 	fprintf(file, "[\n");
 	llist_for_each(blockchain->unspent, (node_func_t)print_unspent_tx_out_info, arg_json);
 	fprintf(file, "]\n");
+	if(list_size == 0)
+	{
+		printf("No unspent transactions available\n");
+		return (-1);
+	}
 
 	fclose(file);
 
 	return (0);
 }
 
+/**
+* generate_unspent_list - generate sorted unspent transactions list
+* @blockchain: blockchain
+* Return: 0 if success, -1 if failed
+*/
+int generate_unspent_list(blockchain_t *blockchain)
+{
+	FILE *file = NULL;
+	size_t list_size = 0;
+	void *arg_json[2];
 
+	arg_json[1] = (void *)list_size;
+
+	if (!blockchain)
+	{
+		printf("Error: Blockchain is invalid\n");
+		return (-1);
+	}
+
+	list_size = llist_size(blockchain->unspent);
+	file = fopen("data_utxo.json", "w");
+
+
+	if (!file)
+	{
+		printf("Error: Failed to open file for writing UTXO data\n");
+		return (-1);
+	}
+
+	arg_json[0] = (void *)file;
+
+	printf(C_GREEN"\n========================================================\n");
+	printf("    ================= List Utxo ==================    ");
+	printf("\n========================================================\n\n"C_RESET);
+	fprintf(file, "[\n");
+	llist_for_each(blockchain->unspent, (node_func_t)print_unspent_tx_out_info, arg_json);
+	fprintf(file, "]\n");
+	if(list_size == 0)
+	{
+		printf("No unspent transactions available\n");
+		return (-1);
+	}
+
+	fclose(file);
+
+	return (0);
+}
 
 /**
 * compares_unspent_tx_out - compare unspent transaction outputs

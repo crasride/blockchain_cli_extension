@@ -15,6 +15,7 @@ int handle_info_selection(state_t *state)
 	printf("1. Blockchain Info\n");
 	printf("2. Blocks Info\n");
 	printf("3. UTXOs Info\n");
+	printf("4. Generate JSON Data\n");
 	printf("Enter option number: ");
 
 	if (fgets(input, sizeof(input), stdin) != NULL)
@@ -28,7 +29,15 @@ int handle_info_selection(state_t *state)
 			case 2:
 				return handle_info_block(state);
 			case 3:
-				return generate_sorted_unspent_list(state->blockchain);
+				return generate_unspent_list(state->blockchain);
+			case 4:
+				freopen("/dev/null", "w", stdout);
+				handle_info(state);
+				handle_info_block(state);
+				generate_unspent_list(state->blockchain);
+				freopen("/dev/tty", "w", stdout);
+				printf(C_GREEN "json files created\n" C_RESET);
+				return 0;
 			default:
 				printf("Invalid option\n");
 				return -1;
@@ -91,9 +100,23 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 	{
 		if (arg1)
 		{
-			printf("Usage: mine\n");
-			printf("Too many arguments\n");
-			return (-1);
+			if (is_number(arg1))
+			{
+				if (!arg2)
+					arg2 = "0";
+				if (is_number(arg2))
+					return (handle_mine_auto(state, atoi(arg1), atoi(arg2)));
+				else
+				{
+					printf("Argument 2 must be a number\n");
+					return (-1);
+				}
+			}
+			else
+			{
+				printf("Argument1 must be a number\n");
+				return (-1);
+			}
 		}
 		else
 			return (handle_mine(state));
@@ -128,27 +151,10 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (handle_send_custom(amount, receiver_address, state));
 		}
 	}
-	else if (strcmp(cmd, "info_blockchain") == 0)
-		return (handle_info(state));
-	else if (strcmp(cmd, "info_block") == 0)
-		return handle_info_block(state);
 	else if (strcmp(cmd, "help") == 0)
 	{
 		print_help();
 		return 0;
-	}
-	else if (strcmp(cmd, "info_utxo") == 0)
-	{
-		if (arg1)
-		{
-			printf("Usage: list\n");
-			printf("Too many arguments\n");
-			return (-1);
-		}
-		else
-		{
-			return generate_sorted_unspent_list(state->blockchain);
-		}
 	}
 	else if (strcmp(cmd, "clear") == 0)
 	{
@@ -158,6 +164,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 	else if (strcmp(cmd, "ls") == 0)
 	{
 		system("ls");
+		return 0;
+	}
+	else if (strcmp(cmd, "sleep") == 0)
+	{
+		system("sleep 1");
 		return 0;
 	}
 	else if (strcmp(cmd, "load") == 0)
@@ -192,9 +203,23 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			{
 				return handle_info_block(state);
 			}
-			else if (strcmp(arg1, "utxo") == 0)
+			else if (strcmp(arg1, "utxo") == 0 && strcmp(arg2, "sorted") == 0)
 			{
 				return generate_sorted_unspent_list(state->blockchain);
+			}
+			else if (strcmp(arg1, "utxo") == 0)
+			{
+				return generate_unspent_list(state->blockchain);
+			}
+			else if (strcmp(arg1, "json") == 0)
+			{
+				freopen("/dev/null", "w", stdout);
+				handle_info(state);
+				handle_info_block(state);
+				generate_unspent_list(state->blockchain);
+				freopen("/dev/tty", "w", stdout);
+				printf(C_GREEN "json files created\n" C_RESET);
+				return (0);
 			}
 			else
 			{
@@ -276,6 +301,7 @@ int main(void)
 	state->tx_pool = tx_pool;
 	state->status = 0;
 	state->wallet = NULL;
+	state->name = NULL;
 
 	while (1)
 	{

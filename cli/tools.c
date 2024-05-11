@@ -54,77 +54,27 @@ int sum_unspent(void *node, unsigned int idx, void *arg)
 }
 
 /**
-*check_string - checks if a string is a valid hex string
-*@address: string to check
-*@pub: public key
-*@len: length of the string
-*Return: 1 if valid, 0 if not
+* sum_unspent_wallet - sum unspent transaction outputs for a wallet
+* @node: unspent transaction output
+* @idx: index of the node
+* @args: pointer to the total and the wallet
+* Return: 0
 */
-int check_string(char *address, uint8_t *pub, size_t len)
+int sum_unspent_wallet(void *node, unsigned int idx, void *args)
 {
-	size_t i;
+	void **ptr = args;
+	unspent_tx_out_t *unspent_tx_out = node;
+	uint32_t *total = (uint32_t *)ptr[0];
+	state_t *state = (state_t *)ptr[1];
+	char *wallet_address, *utxo_address;
+	uint8_t pub[EC_PUB_LEN] = {0};
 
-	for (i = 0; i < len; i++)
-	{
-		if (isdigit(address[i]))
-			continue;
-		else if (address[i] >= 'a' && address[i] <= 'f')
-			continue;
-		else if (address[i] >= 'A' && address[i] <= 'F')
-			address[i] = tolower(address[i]);
-		else
-		{
-			free(pub);
-			return (0);
-		}
-	}
-	return (1);
-}
+	(void)idx;
+	ec_to_pub(state->wallet, pub);
+	wallet_address = bytes_to_hex(pub, EC_PUB_LEN);
+	utxo_address = bytes_to_hex(unspent_tx_out->out.pub, EC_PUB_LEN);
 
-/**
-* string_to_pub - converts a EC_KEY public key in a lowercase or
-* uppercase hex string to a byte array
-*
-* @address: public key of EC_PUB_LEN bytes, in hex
-*
-* Return: byte array on success, or NULL on failure
-*/
-uint8_t *string_to_pub(char *address)
-{
-	uint8_t *pub;
-	unsigned int scan;
-	size_t i, j, len;
-
-	if (!address)
-	{
-		fprintf(stderr, "string_to_pub: NULL parameter\n");
-		return (NULL);
-	}
-	pub = calloc(EC_PUB_LEN, sizeof(uint8_t));
-	if (!pub)
-	{
-		fprintf(stderr, "string_to_pub: calloc failure\n");
-		return (NULL);
-	}
-	len = strlen(address);
-	if (len < (EC_PUB_LEN * 2))
-	{
-		free(pub);
-		return (NULL);
-	}
-	if (!check_string(address, pub, len))
-		return (NULL);
-
-	for (i = 0, j = 0; i < EC_PUB_LEN; i++, j += 2)
-	{
-		if (sscanf(address + j, "%02x", &scan) == -1)
-		{
-			perror("string_to_pub: sscanf");
-			free(pub);
-			return (NULL);
-		}
-		pub[i] = scan;
-	}
-
-	return (pub);
+	if (strcmp(wallet_address, utxo_address) == 0)
+		*total += unspent_tx_out->out.amount;
+	return (0);
 }

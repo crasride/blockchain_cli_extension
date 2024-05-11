@@ -14,6 +14,7 @@ void cleanup(state_t *state)
 			blockchain_destroy(state->blockchain);
 		if (state->tx_pool)
 			llist_destroy(state->tx_pool, 1, (node_dtor_t)transaction_destroy);
+		free(state->name);
 		free(state);
 	}
 }

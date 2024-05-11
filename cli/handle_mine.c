@@ -12,10 +12,16 @@ int handle_mine(state_t *state)
 	block_t *block = NULL;
 	block_t *prev_block = llist_get_tail(state->blockchain->chain);
 	transaction_t *coinbase_tx = NULL;
+	uint8_t pub[EC_PUB_LEN];
 
 	if (!state->wallet)
 	{
 		fprintf(stderr, "mine: No wallet available\n");
+		return (-1);
+	}
+	if (!check_wallet(ec_to_pub(state->wallet, pub)))
+	{
+		printf("mine: Wallet not exist\n");
 		return (-1);
 	}
 	block = block_create(prev_block, block_data, 1024);
