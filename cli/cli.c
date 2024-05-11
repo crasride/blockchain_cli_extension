@@ -1,6 +1,15 @@
 #include "cli.h"
 
-
+int update_json(state_t *state)
+{
+	freopen("/dev/null", "w", stdout);
+	handle_info(state);
+	handle_info_block(state);
+	generate_unspent_list(state->blockchain);
+	freopen("/dev/tty", "w", stdout);
+	printf(C_GREEN "json files created\n" C_RESET);
+	return (0);
+}
 
 /**
 * handle_info_selection - handle the info selection
@@ -31,13 +40,7 @@ int handle_info_selection(state_t *state)
 			case 3:
 				return generate_unspent_list(state->blockchain);
 			case 4:
-				freopen("/dev/null", "w", stdout);
-				handle_info(state);
-				handle_info_block(state);
-				generate_unspent_list(state->blockchain);
-				freopen("/dev/tty", "w", stdout);
-				printf(C_GREEN "json files created\n" C_RESET);
-				return 0;
+				return (update_json(state));
 			default:
 				printf("Invalid option\n");
 				return -1;
@@ -84,7 +87,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (-1);
 		}
 		else
-			return (handle_wallet_save(state, arg1));
+		{
+			handle_wallet_save(state, arg1);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "wallet_load") == 0)
 	{
@@ -94,7 +101,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (-1);
 		}
 		else
-			return (handle_wallet_load(state, arg1));
+		{
+			handle_wallet_load(state, arg1);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "mine") == 0)
 	{
@@ -105,7 +116,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 				if (!arg2)
 					arg2 = "0";
 				if (is_number(arg2))
-					return (handle_mine_auto(state, atoi(arg1), atoi(arg2)));
+				{
+					handle_mine_auto(state, atoi(arg1), atoi(arg2));
+					update_json(state);
+					return (0);
+				}
 				else
 				{
 					printf("Argument 2 must be a number\n");
@@ -119,7 +134,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			}
 		}
 		else
-			return (handle_mine(state));
+		{
+			handle_mine(state);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "send") == 0)
 	{
@@ -133,7 +152,9 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			int amount = atoi(arg1);
 
 			strncpy(receiver_address, arg2, (EC_PUB_LEN * 2) + 1);
-			return (handle_send(amount, receiver_address, state));
+			handle_send(amount, receiver_address, state);
+			update_json(state);
+			return (0);
 		}
 	}
 	else if (strcmp(cmd, "custom_send") == 0)
@@ -148,7 +169,9 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			int amount = atoi(arg1);
 
 			strncpy(receiver_address, arg2, (EC_PUB_LEN * 2) + 1);
-			return (handle_send_custom(amount, receiver_address, state));
+			handle_send_custom(amount, receiver_address, state);
+			update_json(state);
+			return (0);
 		}
 	}
 	else if (strcmp(cmd, "help") == 0)
@@ -179,7 +202,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (-1);
 		}
 		else
-			return (handle_load(state, arg1));
+		{
+			handle_load(state, arg1);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "save") == 0)
 	{
@@ -189,7 +216,11 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 			return (-1);
 		}
 		else
-			return (handle_save(state, arg1));
+		{
+			handle_save(state, arg1);
+			update_json(state);
+			return (0);
+		}
 	}
 	else if (strcmp(cmd, "info") == 0)
 	{
@@ -212,15 +243,7 @@ int find_command(char *cmd, char *arg1, char *arg2, state_t *state,
 				return generate_unspent_list(state->blockchain);
 			}
 			else if (strcmp(arg1, "json") == 0)
-			{
-				freopen("/dev/null", "w", stdout);
-				handle_info(state);
-				handle_info_block(state);
-				generate_unspent_list(state->blockchain);
-				freopen("/dev/tty", "w", stdout);
-				printf(C_GREEN "json files created\n" C_RESET);
-				return (0);
-			}
+				return(update_json(state));
 			else
 			{
 				printf("Invalid option\n");
@@ -302,6 +325,8 @@ int main(void)
 	state->status = 0;
 	state->wallet = NULL;
 	state->name = NULL;
+
+	update_json(state);
 
 	while (1)
 	{
