@@ -30,7 +30,6 @@ int handle_mine(state_t *state)
 		fprintf(stderr, "mine: failed to create block\n");
 		return (-1);
 	}
-
 	coinbase_tx = coinbase_create(state->wallet, block->info.index);
 	if (!coinbase_tx)
 	{
