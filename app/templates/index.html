@@ -271,8 +271,6 @@
         .wallet-style {
             color: rgb(240, 240, 240);
             font-size: 14px;
-            margin-left: 10px;
-            word-wrap: break-word;
         }
 
         /* Estilos para la zona de UTXO */
@@ -283,11 +281,10 @@
         }
 
         .UTXO-zone {
-
-            height: 70%;
+            height: 71%;
             width: 100%;/* Ajusta el ancho */
             float: right; /* Alinea a la derecha */
-            margin-top: 3%; /* Ajusta el margen superior para subirlo */
+            margin-top: 0%; /* Ajusta el margen superior para subirlo */
             padding: 20px; /* Añade relleno */
             box-sizing: border-box;
             border-radius: 10px; /* Agregar bordes redondeados */
@@ -496,17 +493,29 @@
 
                                     // Mostrar el valor del wallet
                                     walletValue = data['wallet_loaded'];
-                                    const connectedWallet = data['name'] ? `Connected Wallet: ${data['name']} ` : 'Connected Wallet: ';
-                                    const secondLine = walletValue ? walletValue.substring(0, 32) : '';
-                                    const thirdLine = walletValue ? walletValue.substring(32, 66) : '';
-                                    const fourthLine = walletValue ? walletValue.substring(66, 99) : '';
-                                    const fifthLine = walletValue ? walletValue.substring(99, 130) : '';
 
-                                    const walletload = document.createElement('span');
-                                    walletload.textContent = `${connectedWallet}\n${secondLine}\n${thirdLine}\n${fourthLine}\n${fifthLine}`;
+                                   // const connectedWallet = data['name'] !== '(null)' ? `Connected Wallet: ${data['name']}` : 'Connected Wallet: Not Saved';
+                                    const connectedWallet = walletValue == '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000' ? 'Connected Wallet: No wallet' : (data['name'] !== '(null)' ? `Connected Wallet: ${data['name']}` : 'Connected Wallet: (Wallet not saved)');
+
+                                    const firstPart = walletValue ? walletValue.substring(0, 8) : '';
+                                    const lastPart = walletValue ? walletValue.substring(122, 130) : '';
+
+                                    const walletload = document.createElement('div');
+                                    const connectedWalletElement = document.createElement('span');
+                                    connectedWalletElement.textContent = connectedWallet;
+                                    const firstPartElement = document.createElement('div');
+                                    firstPartElement.textContent = walletValue == '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000' ? "" :`${firstPart}.........${lastPart}`;
+                                    const lastPartElement = document.createElement('div');
+
+                                    walletload.appendChild(connectedWalletElement);
+                                    walletload.appendChild(document.createElement('b'));
+                                    walletload.appendChild(firstPartElement);
+                                    walletload.appendChild(document.createElement('b'));
+
                                     walletload.classList.add('wallet-style');
                                     walletload.style.color = 'yellow';
                                     utxoZone.appendChild(walletload);
+
 
                                     // Mostrar el valor del wallet por consola
                                     console.log('Valor del wallet recuperado:', walletValue);
