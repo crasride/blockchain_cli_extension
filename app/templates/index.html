@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Blockchain Block Diagram</title>
+    <link rel="stylesheet" href="static/css/graph-styles.css">
+    <link rel="stylesheet" href="static/css/utxo-styles.css">
+    <link rel="stylesheet" href="static/css/blockchain-styles.css">
+    <link rel="stylesheet" href="static/css/block-details-styles.css">
     <!-- Enlaces a bibliotecas de Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -20,7 +23,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly; /* Ajusta el espacio entre las zonas */
-            background-image: url('img/3_720.jpg');
+            background-image: url('static/img/3_720.jpg');
             background-color: rgb(67, 68, 68);
         }
         .graph-zone, .block-zone, .blockchain-zone {
@@ -28,59 +31,6 @@
             margin-bottom: 20px; /* Espacio entre las zonas y el borde inferior */
         }
 
-        /* Estilos para los gráficos */
-        .graph-zone {
-
-            width: 35%; /* Ancho del área de gráficos */
-            height: 30%;
-            top: 20px;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            max-height: calc(100vh - 40px);
-            border-radius: 10px; /* Agregar bordes redondeados */
-        }
-
-        .graph-zone::-webkit-scrollbar {
-            width: 0px; /* Ancho de la barra de desplazamiento */
-        }
-
-        .graph-zone::-webkit-scrollbar-track {
-            background: transparent; /* Fondo transparente */
-        }
-
-        .chartArea {
-            height: 300px;
-            /* Alto del área del gráfico */
-            margin-bottom: 20px;
-            /* Margen inferior */
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .chartArea:last-child {
-            margin-bottom: 0;
-        }
-
-        .graph-zone h2 {
-        position: sticky;
-        top: 0; /* Fija el título en la parte superior */
-        padding: 10px 0; /* Ajusta el relleno del título */
-        margin: 0; /* Elimina el margen para que se ajuste completamente */
-        z-index: 1; /* Asegura que esté por encima del contenido desplazable */
-        text-align: left; /* Centrar el texto horizontalmente */
-        color: #f4f1f1;
-        }
-
-        .graph-zone p {
-            font-size: 18px; /* Aumentar el tamaño del texto */
-            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
-        }
-
-        /* Estilos para los bloques */
-        
         .block-container {
             display: flex;
             flex-wrap: wrap;
@@ -89,7 +39,7 @@
 
         .block {
             position: relative; /* Añadido */
-            left: calc(13% - 50px); /* Ajustar la posición horizontal */
+            left: calc(20% - 7%); /* Ajustar la posición horizontal */
             display: inline-block;
             width: 75px;
             height: 75px;
@@ -101,7 +51,6 @@
         }
 
         .block-zone {
-
             width: 30%;
             height: -5%;
             padding: 25px;
@@ -143,12 +92,12 @@
         }
 
         .front {
-            background-image: url('img/holberton_block.png');
+            background-image: url('static/img/holberton_block.png');
             transform: rotateY(0deg) translateZ(50px);
         }
 
         .back {
-            background-image: url('img/holberton_block.png');
+            background-image: url('static/img/holberton_block.png');
             transform: rotateY(180deg) translateZ(50px);
         }
 
@@ -172,142 +121,6 @@
             100% { transform: rotateY(360deg); }
         }
 
-        /* Estilos para los detalles del bloque */
-        .block-details {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            z-index: 9999;
-        }
-        .block-details h2 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .block-details p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .block-details ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .block-details li {
-            margin-bottom: 10px;
-        }
-        .block-details button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .block-details button:hover {
-            background-color: #0056b3;
-        }
-
-        .block-zone h2 {
-        position: sticky;
-        top: 0; /* Fija el título en la parte superior */
-        padding: 10px 0; /* Ajusta el relleno del título */
-        margin: 0; /* Elimina el margen para que se ajuste completamente */
-        z-index: 1; /* Asegura que esté por encima del contenido desplazable */
-        text-align: center; /* Centrar el texto horizontalmente */
-        color: #f5efef;
-        }
-
-        .block-zone p {
-            font-size: 18px; /* Aumentar el tamaño del texto */
-            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
-        }
-
-        /* Estilos para la zona de blockchain */
-        .container1 {
-
-            display: flex;
-            flex-wrap: wrap;
-            height: 30%;
-            margin-top: auto;
-            right: auto;
-            border-radius: 10px;
-        }
-
-        .blockchain-zone {
-            width: 30%;
-            height: 100;
-            max-height: calc(100vh - 40px);
-            margin-bottom: 20px; 
-            padding: 5px;
-            box-sizing: border-box;
-            border-radius: 10px; /* Agregar bordes redondeados */
-            color: #fff; /* Cambiar el color del texto a blanco */ 
-        }
-        
-        .blockchain-zone p {
-            font-size: 12px; /* Aumentar el tamaño del texto */
-            margin-bottom: 1px; /* Aumentar el espacio entre párrafos */
-            margin-left: 10px; /* Ajustar el margen izquierdo */
-            margin-bottom: 10px; /* Ajustar el margen inferior */
-            
-        }
-
-        .titulo {
-            width: 100%;
-            text-align: center;
-            margin-bottom: -10%;
-        }
-
-        .wallet-style {
-            color: rgb(240, 240, 240);
-            font-size: 14px;
-        }
-
-        /* Estilos para la zona de UTXO */
-        .blockchain-utxo-container {
-            display: flex;
-            flex-direction: column; /* Cambiado a 'column' para que las zonas blockchain y UTXO se apilen verticalmente */
-            gap: 20px; /* Ajustado el espacio entre las zonas */
-        }
-
-        .UTXO-zone {
-            height: 71%;
-            width: 100%;/* Ajusta el ancho */
-            float: right; /* Alinea a la derecha */
-            margin-top: 0%; /* Ajusta el margen superior para subirlo */
-            padding: 20px; /* Añade relleno */
-            box-sizing: border-box;
-            border-radius: 10px; /* Agregar bordes redondeados */
-            color: #fff; /* Cambiar el color del texto a blanco */
-            overflow: auto; /* Agregar desplazamiento vertical */
-        }
-        
-        .UTXO-zone p {
-            font-size: 18px; /* Aumentar el tamaño del texto */
-            margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
-        }
-        
-        .UTXO-zone p:last-child {
-            margin-bottom: 0; /* Eliminar el espacio después del último párrafo */
-        }
-        
-        .UTXO-zone h2 {
-            margin-top: 10px; /* Ajustar el margen superior */
-            font-size: 24px; /* Aumentar el tamaño del título */
-            text-align: center; /* Centrar el texto horizontalmente */
-        }
-
-
     /* Estilos para los detalles del coin */
     .coin {
         display: inline-block;
@@ -330,7 +143,7 @@
     }
 
     .coin:after {
-        background-image: url('img/holberton_block.png');
+        background-image: url('static/img/holberton_block.png');
         background-size: cover;
         content: '';
         position: absolute;
@@ -358,7 +171,7 @@
     }
 
     .heads {
-        background-image: url('img/holberton_block.png');
+        background-image: url('static/img/holberton_block.png');
         position: absolute;
         border-radius: 50%;
         content: '';
@@ -371,20 +184,6 @@
     .coin:hover {
         animation-play-state: paused;
         /* Pausa la animación al pasar el mouse */
-    }
-
-    
-    .UTXO-zone:hover {
-        animation-play-state: paused;
-        /* Pausa la animación al pasar el mouse */
-    }
-
-    .UTXO-zone::-webkit-scrollbar {
-        width: 0px; /* Ancho de la barra de desplazamiento */
-    }
-
-    .UTXO-zone::-webkit-scrollbar-track {
-        background: transparent; /* Fondo transparente */
     }
 
     @media only screen and (max-width: 768px) {
@@ -410,15 +209,12 @@
     .transaction-public-address {
         word-wrap: break-word;
     }
-    
 
     @media only screen and (max-width: 768px) {
         .plot-title {
             font-size: 10px; 
         }
     }
-    
-
     </style>
 </head>
 
@@ -427,7 +223,7 @@
         <!-- Zona de Bloques -->
         <div class="block-zone">
             <h2>Block List Zone</h2>
-            <div id="blockchain" style="display: flex; flex-wrap: wrap; justify-content: center;">
+            <div id="blockchain">
                     <div class="block" onclick="buttonClicked()">
                     <div class="face front"></div>
                     <div class="face back"></div>
@@ -865,6 +661,7 @@
         document.getElementById('blockDetails').style.display = 'none';
     }
 </script>
+
 <!-- Recargar la página al cambiar el tamaño-->
 <script>
     window.addEventListener('resize', function() {
