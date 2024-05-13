@@ -140,7 +140,7 @@ command or at the end of the use type `info` and option `4`
 |                | `mine <block quantity> <time>`    | Mine a specific number of blocks and mining time between of blocks             |
 | send           | `send <amount> <address>`         | Send coins to a specific address.               |
 | custom_send    | `custom_send <amount> <address>`  | It will be asked to specify each utxo to select for this transaction and each utxo to be created for receiver and sender (change)                          |
-| info json      | `info json`                       | Export Blockchain data to JSON data file        |
+| info json      | `info json`                       | Export Blockchain data to JSON file             |
 | info menu      | `info` `<option>`                 | Select option menu                              |
 | info blockchain| `info blockchain`                 | Display information about the blockchain.       |
 | info block     | `info block `                     | Display information about the block.            |
