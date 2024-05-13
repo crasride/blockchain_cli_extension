@@ -11,7 +11,7 @@
 <br>
 
 <p align="center">
-<img width="" height="" src="./app/img/vi1.png">
+<img width="" height="" src="./app/img/principal.png">
 </p>
 
 
@@ -39,17 +39,18 @@ Facilitates the ``sending of transactions`` between different addresses of the b
 Allows the ``creation and inclusion`` of new blocks in the blockchain, along with the 
 ``validation`` and ``resolution`` of associated ``proofs of work``.
 
-### 5. Information Display and Graphical Representation Website:
+### 5. Export Blockchain data to a JSON file:
+
+This functionality allows the extraction and export of blockchain data to a ``JSON`` file format, providing a structured representation of the current state of the `blockchain`. Captures essential details such as ``block`` information, ``transaction`` logs and `UTXO` list, allowing easy integration with external systems or analysis tools.
+
+### 6. Information Display and Graphical Representation Website:
 Provides commands to display relevant information about the current state of the blockchain,
  such as the ``number of blocks``, ``pending transactions``, and ``unspent outputs``. In addition, it is 
  responsible for ``collecting this data`` in a JSON file for subsequent analysis or processing on
  a graphical representation ``website``.
 
-### 6. Blockchain Loading and Saving:
+### 7. Blockchain Loading and Saving:
 Allows you to ``load a blockchain from a file`` or ``save it to a file`` for later use.
-
-
-
 
 
 ## Requirements
@@ -136,11 +137,14 @@ command or at the end of the use type `info` and option `4`
 | wallet_load    | `wallet_load <path>`              | Load wallet from a file.                        |
 | mine           | `mine`                            | Mine a new block.                               |
 |                | `mine <block quantity>`           | Mine a specified quantity of blocks             |
+|                | `mine <block quantity> <time>`    | Mine a specific number of blocks and mining time between of blocks             |
 | send           | `send <amount> <address>`         | Send coins to a specific address.               |
 | custom_send    | `custom_send <amount> <address>`  | It will be asked to specify each utxo to select for this transaction and each utxo to be created for receiver and sender (change)                          |
-| info           | `info`                            | Display information about the blockchain.       |
-| info_block     | `info_block `                     | Display information about the block.            |
-| list_utxo      | `list_utxo`                       | List unspent transactions.                      |
+| info json      | `info json`                       | Export Blockchain data to JSON file             |
+| info menu      | `info` `<option>`                 | Select option menu                              |
+| info blockchain| `info blockchain`                 | Display information about the blockchain.       |
+| info block     | `info block `                     | Display information about the block.            |
+| list utxo      | `list utxo`                       | List unspent transactions.                      |
 | save           | `save <path>/<file>`              | Save blockchain data to a file.                 |
 | load           | `load <path>  `                   | Load blockchain data from a file.               |
 | ls             | `ls`                              | List files in the current directory.            |
