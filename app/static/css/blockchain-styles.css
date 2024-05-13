@@ -1,0 +1,43 @@
+/* Estilos para la zona de blockchain */
+.container1 {
+
+	display: flex;
+	flex-wrap: wrap;
+	height: 30%;
+	margin-top: auto;
+	right: auto;
+	border-radius: 10px;
+}
+
+.blockchain-zone {
+	width: 30%;
+	height: 100;
+	max-height: calc(100vh - 40px);
+	margin-bottom: 20px; 
+	padding: 5px;
+	box-sizing: border-box;
+	border-radius: 10px; /* Agregar bordes redondeados */
+	color: #fff; /* Cambiar el color del texto a blanco */ 
+}
+
+.blockchain-zone p {
+	font-size: 12px; /* Aumentar el tamaño del texto */
+	margin-bottom: 1px; /* Aumentar el espacio entre párrafos */
+	margin-left: 10px; /* Ajustar el margen izquierdo */
+	margin-bottom: 10px; /* Ajustar el margen inferior */
+	
+}
+
+.titulo {
+	width: 100%;
+	text-align: center;
+	margin-bottom: -5%;
+	text-shadow: -1px 0 #414D68, 0 1px #414D68, 1px 0 #414D68, 0 -1px #414D68, -2px 2px 0 #414D68, 2px 2px 0 #414D68, 1px 1px #414D68, 2px 2px #414D68, 3px 3px #414D68, 4px 4px #414D68, 5px 5px #414D68;
+	transition: text-shadow 0.3s ease;
+	transform: perspective(100px) rotateX(10deg);
+}
+
+.wallet-style {
+	color: rgb(240, 240, 240);
+	font-size: 14px;
+}
