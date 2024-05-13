@@ -1,0 +1,62 @@
+/* Estilos para los detalles del bloque */
+.block-details {
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	border-radius: 10px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: none;
+	z-index: 9999;
+}
+.block-details h2 {
+	color: #333;
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+.block-details p {
+	color: #666;
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+.block-details ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.block-details li {
+	margin-bottom: 10px;
+}
+.block-details button {
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+.block-details button:hover {
+	background-color: #0056b3;
+}
+
+.block-zone h2 {
+position: sticky;
+top: 0; /* Fija el título en la parte superior */
+padding: 10px 0; /* Ajusta el relleno del título */
+margin: 0; /* Elimina el margen para que se ajuste completamente */
+z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+text-align: center; /* Centrar el texto horizontalmente */
+color: #f5efef;
+text-shadow: -1px 0 #414D68, 0 1px #414D68, 1px 0 #414D68, 0 -1px #414D68, -2px 2px 0 #414D68, 2px 2px 0 #414D68, 1px 1px #414D68, 2px 2px #414D68, 3px 3px #414D68, 4px 4px #414D68, 5px 5px #414D68;
+transition: text-shadow 0.3s ease;
+transform: perspective(100px) rotateX(10deg);
+}
+
+.block-zone p {
+	font-size: 18px; /* Aumentar el tamaño del texto */
+	margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+}

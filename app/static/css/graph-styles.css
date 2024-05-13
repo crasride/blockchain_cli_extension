@@ -1,0 +1,53 @@
+/* Estilos para los gráficos */
+.graph-zone {
+
+	width: 35%; /* Ancho del área de gráficos */
+	height: 30%;
+	top: 20px;
+	padding: 20px;
+	box-sizing: border-box;
+	overflow-y: auto;
+	max-height: calc(100vh - 40px);
+	border-radius: 10px; /* Agregar bordes redondeados */
+}
+
+.graph-zone::-webkit-scrollbar {
+	width: 0px; /* Ancho de la barra de desplazamiento */
+}
+
+.graph-zone::-webkit-scrollbar-track {
+	background: transparent; /* Fondo transparente */
+}
+
+.chartArea {
+	height: 300px;
+	/* Alto del área del gráfico */
+	margin-bottom: 20px;
+	/* Margen inferior */
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+
+.chartArea:last-child {
+	margin-bottom: 0;
+}
+
+.graph-zone h2 {
+position: sticky;
+top: 0; /* Fija el título en la parte superior */
+padding: 10px 0; /* Ajusta el relleno del título */
+margin: 0; /* Elimina el margen para que se ajuste completamente */
+z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+text-align: left; /* Centrar el texto horizontalmente */
+color: #f4f1f1;
+text-shadow: -1px 0 #414D68, 0 1px #414D68, 1px 0 #414D68, 0 -1px #414D68, -2px 2px 0 #414D68, 2px 2px 0 #414D68, 1px 1px #414D68, 2px 2px #414D68, 3px 3px #414D68, 4px 4px #414D68, 5px 5px #414D68;
+transition: text-shadow 0.3s ease;
+transform: perspective(100px) rotateX(10deg);
+}
+
+.graph-zone p {
+	font-size: 18px; /* Aumentar el tamaño del texto */
+	margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+}
