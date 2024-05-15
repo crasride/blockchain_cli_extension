@@ -124,7 +124,7 @@ llist_t *utxo_list_selection(state_t *state)
 	int size = llist_size(current_own_unspent), i, sum_selected = 0, size_selected;
 	int index = 0;
 	bool *checkboxes = (bool *)calloc(size, sizeof(bool)); /* Array of checkboxes */
-	char **tokens_selected;
+	char **tokens_selected = {0};
 
 	if (size == 0)
 	{
@@ -148,8 +148,10 @@ llist_t *utxo_list_selection(state_t *state)
 	for (i = 0; i < size_selected; i++)
 	{
 		index = atoi(tokens_selected[i]);
+		free(tokens_selected[i]);
 		checkboxes[index] = true;
 	}
+	free(tokens_selected);
 
 	for (i = 0; i < size; i++)
 	{
@@ -175,12 +177,13 @@ llist_t *utxo_list_selection(state_t *state)
 llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 							int sum_selected)
 {
-	char **tokens_receiver, **tokens_sender;
+	char **tokens_receiver = {0}, **tokens_sender = {0};
 	llist_t *tx_out_list = llist_create(MT_SUPPORT_FALSE);
 	int i, change = 0, len_receiver = 0, len_sender = 0;
 	uint32_t token = 0;
 	uint8_t pub_receiver[EC_PUB_LEN] = {0};
 	uint8_t pub_sender[EC_PUB_LEN] = {0};
+	char *dummy_line = NULL;
 
 	ec_to_pub(state->wallet, pub_sender);
 	ec_to_pub(receiver_key, pub_receiver);
@@ -207,13 +210,18 @@ llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 		tx_out_t *tx_out = NULL;
 
 		token = atoi(tokens_receiver[i]);
+		free(tokens_receiver[i]);
 		printf("%u ", token);
 		tx_out = tx_out_create(token, pub_receiver);
 		if (tx_out)
 			llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
 	}
+	if (tokens_receiver)
+		free(tokens_receiver);
 
-	readline("");
+	dummy_line = readline("");
+	if (dummy_line)
+		free(dummy_line);
 	system("clear");
 
 	change = sum_selected - amount; /* Calculate change */
@@ -234,14 +242,19 @@ llist_t *tx_out_custom_list(state_t *state, EC_KEY *receiver_key, int amount,
 		tx_out_t *tx_out = NULL;
 
 		token = atoi(tokens_sender[i]);
+		free(tokens_sender[i]);
 		printf("%u ", token);
 		tx_out = tx_out_create(token, pub_sender);
 		if (tx_out)
 			llist_add_node(tx_out_list, tx_out, ADD_NODE_REAR);
 	}
+	if (tokens_sender)
+		free(tokens_sender);
 	printf("\n");
 
-	readline("");
+	dummy_line = readline("");
+	if (dummy_line)
+		free(dummy_line);
 	system("clear");
 
 	return (tx_out_list);

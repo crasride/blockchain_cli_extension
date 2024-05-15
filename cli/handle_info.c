@@ -40,9 +40,13 @@ int handle_info(state_t *state)
 	FILE *file	= NULL;
 	uint8_t pub[EC_PUB_LEN] = {0};
 	void *args[2];
+	char *strpub = NULL;
 
 	if (state->wallet)
+	{
 		ec_to_pub(state->wallet, pub);
+		strpub = bytes_to_hex(pub, EC_PUB_LEN);
+	}
 	if (!state || !blockchain)
 	{
 		printf("Error: State or Blockchain is NULL\n");
@@ -83,7 +87,7 @@ int handle_info(state_t *state)
 
 		fprintf(file, "  \"Total Supply HolbertonCoins\": \"%u\",\n", coins);
 		fprintf(file, "  \"Total coin on wallet\": \"%u\",\n", own_coins);
-		fprintf(file, "  \"wallet_loaded\": \"%s\",\n", bytes_to_hex(pub, EC_PUB_LEN));
+		fprintf(file, "  \"wallet_loaded\": \"%s\",\n", strpub);
 		fprintf(file, "  \"name\": \"%s\"\n", state->name);
 		fprintf(file, "}\n");
 
@@ -117,7 +121,7 @@ int handle_info(state_t *state)
 	printf("Total Supply HolbertonCoins: " C_GREEN "%u" C_RESET "\n", coins);
 	printf("Total coin on wallet: " C_GREEN "%u" C_RESET "\n", own_coins);
 	if (check_wallet(pub))
-		printf("Wallet loaded: %s\n", bytes_to_hex(pub, EC_PUB_LEN));
+		printf("Wallet loaded: %s\n", strpub);
 	else
 		printf("Wallet loaded: " C_RED "No wallet\n" C_RESET);
 	if (!state->name)
@@ -125,6 +129,8 @@ int handle_info(state_t *state)
 	else
 		printf("Name: %s\n", state->name);
 	printf(C_GREEN "\n======================================================\n\n" C_RESET);
+	if (strpub)
+		free(strpub);
 
 	return (0);
 }
