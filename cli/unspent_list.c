@@ -147,6 +147,8 @@ int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg)
 	unspent_tx_out_t *utxo = NULL;
 	FILE *file = (FILE *)ptr[0];
 	size_t *size = (size_t *)ptr[1];
+	char *str_block_hash = NULL, *str_tx_id = NULL, *str_pub = NULL;
+	char *str_out_hash = NULL;
 
 	if (!node)
 	{
@@ -156,18 +158,18 @@ int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg)
 
 	utxo = (unspent_tx_out_t *)llist_get_node_data(node);
 
+	str_block_hash = bytes_to_hex(utxo->block_hash,SHA256_DIGEST_LENGTH);
+	str_tx_id = bytes_to_hex(utxo->tx_id, SHA256_DIGEST_LENGTH);
+	str_pub = bytes_to_hex(utxo->out.pub, EC_PUB_LEN);
+	str_out_hash = bytes_to_hex(utxo->out.hash, SHA256_DIGEST_LENGTH);
 
 	fprintf(file, "{\n");
-	fprintf(file, "  \"block_hash\": \"%s\",\n", bytes_to_hex(utxo->block_hash,
-			SHA256_DIGEST_LENGTH));
-	fprintf(file, "  \"transaction_id\": \"%s\",\n", bytes_to_hex(utxo->tx_id,
-			SHA256_DIGEST_LENGTH));
+	fprintf(file, "  \"block_hash\": \"%s\",\n", str_block_hash);
+	fprintf(file, "  \"transaction_id\": \"%s\",\n", str_tx_id);
 	fprintf(file, "  \"output\": {\n");
 	fprintf(file, "    \"amount\": %u,\n", utxo->out.amount);
-	fprintf(file, "    \"public_address\": \"%s\",\n", bytes_to_hex(utxo->out.pub,
-			EC_PUB_LEN));
-	fprintf(file, "    \"output_hash\": \"%s\"\n", bytes_to_hex(utxo->out.hash,
-			SHA256_DIGEST_LENGTH));
+	fprintf(file, "    \"public_address\": \"%s\",\n", str_pub);
+	fprintf(file, "    \"output_hash\": \"%s\"\n", str_out_hash);
 	fprintf(file, "  }\n");
 
 	if (idx == *size - 1)
@@ -179,17 +181,22 @@ int print_unspent_tx_out_info(llist_node_t node, unsigned int idx, void *arg)
 		fprintf(file, "},\n");
 	}
 
-	printf("Block Hash: %s\n", bytes_to_hex(utxo->block_hash,
-														SHA256_DIGEST_LENGTH));
-	printf("Transaction ID: %s\n", bytes_to_hex(utxo->tx_id,
-														SHA256_DIGEST_LENGTH));
+	printf("Block Hash: %s\n", str_block_hash);
+	printf("Transaction ID: %s\n", str_tx_id);
 	printf("Output Info:\n");
 	printf("    - Amount: %u\n", utxo->out.amount);
-	printf("    - Public Address: %s\n", bytes_to_hex(utxo->out.pub, EC_PUB_LEN));
-	printf("    - Output Hash: %s\n", bytes_to_hex(utxo->out.hash,
-														SHA256_DIGEST_LENGTH));
+	printf("    - Public Address: %s\n", str_pub);
+	printf("    - Output Hash: %s\n", str_out_hash);
 	printf(C_GREEN"\n========================================================\n\n"
 	C_RESET);
+	if (str_block_hash)
+		free(str_block_hash);
+	if (str_tx_id)
+		free(str_tx_id);
+	if (str_pub)
+		free(str_pub);
+	if (str_out_hash)
+		free(str_out_hash);
 
 	return (0);
 }

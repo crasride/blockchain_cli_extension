@@ -13,7 +13,7 @@ int handle_send_custom(int amount, char *receiver_address, state_t *state)
 	transaction_t *tx = NULL;
 	llist_t *selected_utxos = NULL, *new_tx_out = NULL;
 	uint32_t size = 0, sum_selected = 0, i;
-	/* char *dummy_line; */
+	char *dummy_line = NULL;
 
 	str_to_key(receiver_address, &receiver_key);
 	system("clear");
@@ -42,7 +42,9 @@ int handle_send_custom(int amount, char *receiver_address, state_t *state)
 		sum_selected += utxo->out.amount;
 	}
 
-	readline("");
+	dummy_line = readline("");
+	if (dummy_line)
+		free(dummy_line);
 	system("clear");
 
 	new_tx_out = tx_out_custom_list(state, receiver_key, amount, sum_selected);
