@@ -11,7 +11,7 @@
 <br>
 
 <p align="center">
-<img width="" height="" src="./app/img/principal.png">
+<img width="" height="" src="./app/static/img/principal.png">
 </p>
 
 
