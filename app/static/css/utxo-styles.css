@@ -1,0 +1,50 @@
+ /* Estilos para la zona de UTXO */
+.blockchain-utxo-container {
+	display: flex;
+	flex-direction: column; /* Cambiado a 'column' para que las zonas blockchain y UTXO se apilen verticalmente */
+	gap: 20px; /* Ajustado el espacio entre las zonas */
+}
+
+.UTXO-zone {
+	height: 71%;
+	width: 100%;/* Ajusta el ancho */
+	float: right; /* Alinea a la derecha */
+	margin-top: 0%; /* Ajusta el margen superior para subirlo */
+	padding: 20px; /* Añade relleno */
+	box-sizing: border-box;
+	border-radius: 10px; /* Agregar bordes redondeados */
+	color: #fff; /* Cambiar el color del texto a blanco */
+	overflow: auto; /* Agregar desplazamiento vertical */
+}
+
+.UTXO-zone p {
+	font-size: 18px; /* Aumentar el tamaño del texto */
+	margin-bottom: 15px; /* Aumentar el espacio entre párrafos */
+}
+
+.UTXO-zone p:last-child {
+	margin-bottom: 0; /* Eliminar el espacio después del último párrafo */
+}
+
+.UTXO-zone h2 {
+	margin-top: 10px; /* Ajustar el margen superior */
+	font-size: 24px; /* Aumentar el tamaño del título */
+	text-align: center; /* Centrar el texto horizontalmente */
+	text-shadow: -1px 0 #414D68, 0 1px #414D68, 1px 0 #414D68, 0 -1px #414D68, -2px 2px 0 #414D68, 2px 2px 0 #414D68, 1px 1px #414D68, 2px 2px #414D68, 3px 3px #414D68, 4px 4px #414D68, 5px 5px #414D68;
+	transition: text-shadow 0.3s ease;
+	transform: perspective(100px) rotateX(10deg);
+
+}
+
+.UTXO-zone:hover {
+	animation-play-state: paused;
+	/* Pausa la animación al pasar el mouse */
+}
+
+.UTXO-zone::-webkit-scrollbar {
+	width: 0px; /* Ancho de la barra de desplazamiento */
+}
+
+.UTXO-zone::-webkit-scrollbar-track {
+	background: transparent; /* Fondo transparente */
+}

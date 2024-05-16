@@ -76,5 +76,10 @@ int sum_unspent_wallet(void *node, unsigned int idx, void *args)
 
 	if (strcmp(wallet_address, utxo_address) == 0)
 		*total += unspent_tx_out->out.amount;
+	if (wallet_address)
+		free(wallet_address);
+	if (utxo_address)
+		free(utxo_address);
+
 	return (0);
 }
