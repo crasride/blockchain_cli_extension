@@ -65,7 +65,7 @@ int checkline(char *line)
 char **get_line_tokens(void)
 {
 	char *line = NULL, *token = NULL;
-	char **tokens = (char **)malloc(MAX_TOKENS * sizeof(char *));
+	char **tokens = (char **)calloc(MAX_TOKENS, sizeof(char *));
 	int i;
 
 	if (tokens == NULL)
@@ -89,14 +89,16 @@ char **get_line_tokens(void)
 			break;
 	}
 
-	token = strtok(line, " ");
+	token = strtok(line, " \n");
 	for (i = 0; token != NULL && i < MAX_TOKENS; i++)
 	{
 		/* while (*token && !isdigit(*token))
 			token++; */
 		tokens[i] = strdup(token);
+		/* printf("Token %d: %s\n", i, tokens[i]); */
 		token = strtok(NULL, " ");
 	}
+
 	if (i >= MAX_TOKENS)
 	{
 		printf("Maximum number of tokens exceeded.\n");
@@ -121,7 +123,8 @@ llist_t *utxo_list_selection(state_t *state)
 {
 	llist_t *selected_utxos = llist_create(MT_SUPPORT_FALSE);
 	llist_t *current_own_unspent = generate_own_unspent_list(state);
-	int size = llist_size(current_own_unspent), i, sum_selected = 0, size_selected;
+	int size = llist_size(current_own_unspent), i, sum_selected = 0, size_selected = 0;
+
 	int index = 0;
 	bool *checkboxes = (bool *)calloc(size, sizeof(bool)); /* Array of checkboxes */
 	char **tokens_selected = {0};
@@ -144,14 +147,23 @@ llist_t *utxo_list_selection(state_t *state)
 	}
 
 	tokens_selected = get_line_tokens();
-	size_selected = len(tokens_selected);
+	if (!tokens_selected)
+	{
+		printf("Token_selected: null\n");
+		return (NULL);
+	}
+	else
+		size_selected = len(tokens_selected);
+	printf("Size selected: %d\n", size_selected);
 	for (i = 0; i < size_selected; i++)
 	{
 		index = atoi(tokens_selected[i]);
-		free(tokens_selected[i]);
+		if (tokens_selected[i])
+			free(tokens_selected[i]);
 		checkboxes[index] = true;
 	}
-	free(tokens_selected);
+	if (tokens_selected)
+		free(tokens_selected);
 
 	for (i = 0; i < size; i++)
 	{
@@ -170,6 +182,7 @@ llist_t *utxo_list_selection(state_t *state)
 
 	llist_destroy(current_own_unspent, 0, NULL);
 	free(checkboxes); /* Free memory allocated for checkboxes */
+
 
 	return (selected_utxos);
 }
